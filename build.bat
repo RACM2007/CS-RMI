@@ -1,4 +1,4 @@
-SET CLASSPATH_SERVER="server\src:server\libs\mysql-connector-java-5.1.39.jar"
+SET CLASSPATH_SERVER="server\src;server\libs\mysql-connector-java-5.1.39.jar"
 SET CLASSPATH_CLIENTE="cliente\src"
 
 @echo off
