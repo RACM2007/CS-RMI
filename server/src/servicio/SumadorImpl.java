@@ -1,6 +1,9 @@
+package servicio;
 
 import java.rmi.*;
 import java.rmi.server.*;
+
+import remoto.servicio.Sumador;
 
 public class SumadorImpl extends UnicastRemoteObject
               implements Sumador {

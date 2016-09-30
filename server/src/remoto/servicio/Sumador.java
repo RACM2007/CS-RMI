@@ -1,3 +1,4 @@
+package remoto.servicio;
 
 import java.rmi.*;
 

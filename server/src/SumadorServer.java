@@ -3,6 +3,9 @@ import java.rmi.*;
 import java.rmi.server.*;
 import java.rmi.registry.*;
 
+import remoto.servicio.Sumador;
+import servicio.SumadorImpl;
+
 public class SumadorServer {
 
   public static void main(String args[]) {

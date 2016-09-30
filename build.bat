@@ -2,6 +2,6 @@
 call clean.bat
 mkdir server\dist
 mkdir cliente\dist
-javac -d server\dist\ server\src\*.java
-copy /Y server\src\Sumador.java cliente\src
-javac -d cliente\dist\ cliente\src\*.java
+javac -d server\dist\ -cp server\src server\src\*.java
+copy /Y server\src\remoto cliente\src\remoto
+javac -d cliente\dist\ -cp server\src cliente\src\*.java
