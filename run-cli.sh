@@ -1,1 +1,3 @@
-java -classpath cliente/dist SumadorCliente
+CLASSPATH_CLIENTE="cliente/dist"
+
+java -classpath $CLASSPATH_CLIENTE SumadorCliente

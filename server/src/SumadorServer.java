@@ -5,11 +5,15 @@ import java.rmi.registry.*;
 
 import remoto.servicio.Sumador;
 import servicio.SumadorImpl;
+import db.ConnectionFactory;
 
 public class SumadorServer {
 
   public static void main(String args[]) {
     try {
+
+      ConnectionFactory.getConnection();
+
       System.out.println("Iniciando servidor ... ");
       Sumador sumador = new SumadorImpl();
 
