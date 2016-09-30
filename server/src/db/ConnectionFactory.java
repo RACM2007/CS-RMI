@@ -21,7 +21,6 @@ public class ConnectionFactory {
       if (connection == null || connection.isClosed()) {
         Class.forName(driver);
         connection = DriverManager.getConnection(url, user, pass);
-        System.out.println("Connected!");
       }
     } catch(ClassNotFoundException e) {
       e.printStackTrace();
