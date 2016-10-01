@@ -5,6 +5,6 @@ SET CLASSPATH_CLIENTE="cliente\src"
 call clean.bat
 mkdir server\dist
 mkdir cliente\dist
-javac -d server\dist\ -cp %CLASSPATH_SERVER% server\src\*.java
+javac -encoding "UTF-8" -d server\dist\ -cp %CLASSPATH_SERVER% server\src\*.java
 copy \Y server\src\remoto cliente\src\remoto
-javac -d cliente\dist\ -cp %CLASSPATH_CLIENTE% cliente\src\*.java
+javac -encoding "UTF-8" -d cliente\dist\ -cp %CLASSPATH_CLIENTE% cliente\src\*.java
