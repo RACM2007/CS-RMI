@@ -13,6 +13,8 @@ import repositorio.impl.UsuarioRepositorioImpl;
 
 import servicio.UsuarioServicioImpl;
 
+import vista.VistaPrincipal;
+
 public class Server {
 
   public static void main(String args[]) {
@@ -22,6 +24,7 @@ public class Server {
       UsuarioServicio usuarioServicio = new UsuarioServicioImpl(usuarioRepositorio);
 
       System.out.println("Iniciando servidor ... ");
+      new VistaPrincipal();
 
       // Bind the remote object's stub in the registry
       Registry registry = LocateRegistry.createRegistry(8084);
