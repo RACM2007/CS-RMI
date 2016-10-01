@@ -22,7 +22,7 @@ Se asume que tiene la variable de entorno JAVA_HOME con los valores correctos y 
 
 - Restaurar script de base de datos
 - Ejecutar el script build.bat (windows) o build.sh (unix) para construir y compilar tanto el cliente como el servidor.
-- Ejecutar el script run-server.bat (windows) o run-server.sh (unix) para inicial el servidor.
+- Ejecutar el script run-server.bat (windows) o run-server.sh (unix) para iniciar el servidor.
 - Ejecutar el script run-cli.bat (windows) o run-cli.sh (unix) para iniciar el cliente.
 
 ## Licencia

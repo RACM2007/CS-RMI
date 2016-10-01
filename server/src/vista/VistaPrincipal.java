@@ -104,7 +104,7 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
     jButtonStart.setText("Start");
 
-    jButtonRestart.setText("restart");
+    jButtonRestart.setText("Restart");
 
     javax.swing.GroupLayout jPanelControlesLayout = new javax.swing.GroupLayout(jPanelControles);
     jPanelControles.setLayout(jPanelControlesLayout);
