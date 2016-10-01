@@ -13,7 +13,7 @@ import repositorio.impl.UsuarioRepositorioImpl;
 
 import servicio.UsuarioServicioImpl;
 
-import vista.VistaPrincipal;
+import ui.FramePrincipal;
 
 public class Server {
 
@@ -24,7 +24,7 @@ public class Server {
       UsuarioServicio usuarioServicio = new UsuarioServicioImpl(usuarioRepositorio);
 
       System.out.println("Iniciando servidor ... ");
-      new VistaPrincipal();
+      new FramePrincipal();
 
       // Bind the remote object's stub in the registry
       Registry registry = LocateRegistry.createRegistry(8084);

@@ -1,10 +1,18 @@
-package vista;
+package ui;
 
+import vista.PrincipalVista;
+import presentador.PrincipalPresentador;
+import presentador.PrincipalPresentadorImpl;
 
-public class VistaPrincipal extends javax.swing.JFrame {
+public class FramePrincipal extends javax.swing.JFrame
+              implements PrincipalVista {
 
-  public VistaPrincipal() {
+  private PrincipalPresentador principalPresentador;
+
+  public FramePrincipal() {
     initComponents();
+
+    principalPresentador = new PrincipalPresentadorImpl(this);
   }
 
   @SuppressWarnings("unchecked")
@@ -101,10 +109,25 @@ public class VistaPrincipal extends javax.swing.JFrame {
     jPanelControles.setBorder(javax.swing.BorderFactory.createTitledBorder("Controles"));
 
     jButtonStop.setText("Stop");
+    jButtonStop.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonStopActionPerformed(evt);
+      }
+    });
 
     jButtonStart.setText("Start");
+    jButtonStart.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonStartActionPerformed(evt);
+      }
+    });
 
     jButtonRestart.setText("Restart");
+    jButtonRestart.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jButtonRestartActionPerformed(evt);
+      }
+    });
 
     javax.swing.GroupLayout jPanelControlesLayout = new javax.swing.GroupLayout(jPanelControles);
     jPanelControles.setLayout(jPanelControlesLayout);
@@ -152,6 +175,11 @@ public class VistaPrincipal extends javax.swing.JFrame {
     jMenuArchivo.setText("Archivo");
 
     jMenuItemSalir.setText("Salir");
+    jMenuItemSalir.addActionListener(new java.awt.event.ActionListener() {
+      public void actionPerformed(java.awt.event.ActionEvent evt) {
+        jMenuItemSalirActionPerformed(evt);
+      }
+    });
     jMenuArchivo.add(jMenuItemSalir);
 
     jMenuBar.add(jMenuArchivo);
@@ -175,7 +203,41 @@ public class VistaPrincipal extends javax.swing.JFrame {
 
     pack();
     setVisible(true);
-  }                        
+  }
+
+  private void jMenuItemSalirActionPerformed(java.awt.event.ActionEvent evt) {                                               
+    System.exit(0);
+  }
+
+  private void jButtonStopActionPerformed(java.awt.event.ActionEvent evt) {                                               
+    principalPresentador.detenerServer();
+  }
+
+  private void jButtonStartActionPerformed(java.awt.event.ActionEvent evt) {                                               
+    principalPresentador.iniciarServer();
+  }
+
+  private void jButtonRestartActionPerformed(java.awt.event.ActionEvent evt) {                                               
+    principalPresentador.reiniciarServer();
+  }
+
+  public void mostrarMensaje(String mensaje) {
+    javax.swing.JOptionPane.showMessageDialog(
+      this, 
+      mensaje, 
+      "Mensaje",
+      javax.swing.JOptionPane.INFORMATION_MESSAGE
+    );
+  }
+
+  public void mostrarError(String error) {
+    javax.swing.JOptionPane.showMessageDialog(
+      this, 
+      error, 
+      "Error",
+      javax.swing.JOptionPane.ERROR_MESSAGE
+    );
+  }
 
                     
   private javax.swing.JButton jButtonRestart;
