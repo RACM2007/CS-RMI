@@ -12,19 +12,16 @@ import remoto.modelo.Usuario;
 import repositorio.UsuarioRepositorio;
 import repositorio.impl.UsuarioRepositorioImpl;
 
+import remoto.servicio.UsuarioServicio;
+import servicio.UsuarioServicioImpl;
+
 public class SumadorServer {
 
   public static void main(String args[]) {
     try {
 
       UsuarioRepositorio usuarioRepositorio = new UsuarioRepositorioImpl(ConnectionFactory.getConnection());
-
-      Usuario usuario = new Usuario("test1", "test1");
-      usuario.setId(7);
-      usuario.setLogin("asdf");
-      usuario.setPassword("asdf");
-
-      System.out.println(usuarioRepositorio.obtenerPorLogin("hugo"));
+      UsuarioServicio usuarioServicio = new UsuarioServicioImpl(usuarioRepositorio);
 
       System.out.println("Iniciando servidor ... ");
       Sumador sumador = new SumadorImpl();
@@ -32,6 +29,7 @@ public class SumadorServer {
       // Bind the remote object's stub in the registry
       Registry registry = LocateRegistry.createRegistry(8084);
       registry.bind("sumador", sumador);
+      registry.bind("usuario", usuarioServicio);
 
       System.out.println("Server ready!");
     } catch (Exception e) {
