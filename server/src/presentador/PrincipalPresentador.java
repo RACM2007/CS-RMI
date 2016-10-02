@@ -1,9 +1,11 @@
 package presentador;
 
+import util.Parametros;
+
 public interface PrincipalPresentador {
 
-  public void iniciarServer();
+  public void iniciarServer(Parametros parametros);
   public void detenerServer();
-  public void reiniciarServer();
+  public void reiniciarServer(Parametros parametros);
   
 }

@@ -4,15 +4,19 @@ import vista.PrincipalVista;
 import presentador.PrincipalPresentador;
 import presentador.PrincipalPresentadorImpl;
 
+import util.Parametros;
+
 public class FramePrincipal extends javax.swing.JFrame
               implements PrincipalVista {
 
   private PrincipalPresentador principalPresentador;
+  private Parametros parametros;
 
   public FramePrincipal() {
     initComponents();
 
     principalPresentador = new PrincipalPresentadorImpl(this);
+    enableButtons(true, false, false);
   }
 
   @SuppressWarnings("unchecked")
@@ -24,10 +28,12 @@ public class FramePrincipal extends javax.swing.JFrame
     jTextFieldHost = new javax.swing.JTextField();
     jLabelPuertoBD = new javax.swing.JLabel();
     jTextFieldPuertoBD = new javax.swing.JTextField();
-    jLabel2 = new javax.swing.JLabel();
+    jLabelNombreBD = new javax.swing.JLabel();
+    jLabelUsuarioBD = new javax.swing.JLabel();
     jLabelPuertoRMI = new javax.swing.JLabel();
     jTextFieldPuertoRMI = new javax.swing.JTextField();
     jTextFieldNombreBD = new javax.swing.JTextField();
+    jTextFieldUsuarioBD = new javax.swing.JTextField();
     jLabelPasswordBD = new javax.swing.JLabel();
     jPasswordFieldPasswordBD = new javax.swing.JPasswordField();
     jPanelControles = new javax.swing.JPanel();
@@ -37,6 +43,7 @@ public class FramePrincipal extends javax.swing.JFrame
     jMenuBar = new javax.swing.JMenuBar();
     jMenuArchivo = new javax.swing.JMenu();
     jMenuItemSalir = new javax.swing.JMenuItem();
+    jProgressBar = new javax.swing.JProgressBar();
 
     setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
     setTitle("Banco RMI - Server");
@@ -48,11 +55,19 @@ public class FramePrincipal extends javax.swing.JFrame
 
     jLabelPuertoBD.setText("Puerto BD");
 
-    jLabel2.setText("Nombre BD");
+    jLabelNombreBD.setText("Nombre BD");
+
+    jLabelUsuarioBD.setText("Usuario BD");
 
     jLabelPuertoRMI.setText("Puerto RMI");
 
     jLabelPasswordBD.setText("Password BD");
+
+    jTextFieldHost.setText("localhost");
+    jTextFieldPuertoBD.setText("3306");
+    jTextFieldPuertoRMI.setText("8084");
+    jTextFieldNombreBD.setText("banco");
+    jTextFieldUsuarioBD.setText("root");
 
     javax.swing.GroupLayout jPanelConfiguracionLayout = new javax.swing.GroupLayout(jPanelConfiguracion);
     jPanelConfiguracion.setLayout(jPanelConfiguracionLayout);
@@ -65,7 +80,7 @@ public class FramePrincipal extends javax.swing.JFrame
           .addComponent(jTextFieldHost)
           .addGroup(jPanelConfiguracionLayout.createSequentialGroup()
             .addGroup(jPanelConfiguracionLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-              .addComponent(jLabel2)
+              .addComponent(jLabelNombreBD)
               .addGroup(jPanelConfiguracionLayout.createSequentialGroup()
                 .addComponent(jLabelPuertoBD)
                 .addGap(41, 41, 41)
@@ -74,6 +89,8 @@ public class FramePrincipal extends javax.swing.JFrame
                 .addComponent(jTextFieldPuertoBD, javax.swing.GroupLayout.PREFERRED_SIZE, 95, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jTextFieldPuertoRMI, javax.swing.GroupLayout.PREFERRED_SIZE, 92, javax.swing.GroupLayout.PREFERRED_SIZE))
+              .addComponent(jLabelUsuarioBD)
+              .addComponent(jTextFieldUsuarioBD, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
               .addComponent(jLabelPasswordBD)
               .addComponent(jTextFieldNombreBD, javax.swing.GroupLayout.DEFAULT_SIZE, 215, Short.MAX_VALUE)
               .addComponent(jPasswordFieldPasswordBD))
@@ -96,9 +113,13 @@ public class FramePrincipal extends javax.swing.JFrame
           .addComponent(jTextFieldPuertoBD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
           .addComponent(jTextFieldPuertoRMI, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-        .addComponent(jLabel2)
+        .addComponent(jLabelNombreBD)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
         .addComponent(jTextFieldNombreBD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+        .addComponent(jLabelUsuarioBD)
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(jTextFieldUsuarioBD, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
         .addComponent(jLabelPasswordBD)
         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -172,6 +193,8 @@ public class FramePrincipal extends javax.swing.JFrame
         .addComponent(jPanelControles, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
     );
 
+    jProgressBar.setIndeterminate(false);
+
     jMenuArchivo.setText("Archivo");
 
     jMenuItemSalir.setText("Salir");
@@ -191,14 +214,20 @@ public class FramePrincipal extends javax.swing.JFrame
     layout.setHorizontalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
-        .addComponent(jPanelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+          .addComponent(jPanelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+          .addGroup(layout.createSequentialGroup()
+            .addGap(90, 90, 90)
+            .addComponent(jProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
     );
     layout.setVerticalGroup(
       layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
       .addGroup(layout.createSequentialGroup()
         .addComponent(jPanelPrincipal, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-        .addGap(0, 12, Short.MAX_VALUE))
+        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+        .addComponent(jProgressBar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+        .addGap(0, 8, Short.MAX_VALUE))
     );
 
     pack();
@@ -213,12 +242,18 @@ public class FramePrincipal extends javax.swing.JFrame
     principalPresentador.detenerServer();
   }
 
-  private void jButtonStartActionPerformed(java.awt.event.ActionEvent evt) {                                               
-    principalPresentador.iniciarServer();
+  private void jButtonStartActionPerformed(java.awt.event.ActionEvent evt) {
+    if (!validarParametros()) return;
+
+    leerParametros();                                         
+    principalPresentador.iniciarServer(parametros);
   }
 
-  private void jButtonRestartActionPerformed(java.awt.event.ActionEvent evt) {                                               
-    principalPresentador.reiniciarServer();
+  private void jButtonRestartActionPerformed(java.awt.event.ActionEvent evt) {
+    if (!validarParametros()) return;
+
+    leerParametros();                                          
+    principalPresentador.reiniciarServer(parametros);
   }
 
   public void mostrarMensaje(String mensaje) {
@@ -239,11 +274,72 @@ public class FramePrincipal extends javax.swing.JFrame
     );
   }
 
+  public void enableButtons(Boolean start, Boolean stop, Boolean restart) {
+    jButtonStart.setEnabled(start);
+    jButtonStop.setEnabled(stop);
+    jButtonRestart.setEnabled(restart);
+  }
+
+  public void showProgress() {
+    jProgressBar.setIndeterminate(true);
+  }
+
+  public void hideProgress() {
+    jProgressBar.setIndeterminate(false);
+  }
+
+  private void leerParametros() {
+    parametros = new Parametros();
+    parametros.setHostDB(jTextFieldHost.getText());
+    parametros.setPortDB(Integer.valueOf(jTextFieldPuertoBD.getText()));
+    parametros.setNameDB(jTextFieldNombreBD.getText());
+    parametros.setUserDB(jTextFieldUsuarioBD.getText());
+    parametros.setPassDB(new String(jPasswordFieldPasswordBD.getPassword()));
+    parametros.setPortRMI(Integer.valueOf(jTextFieldPuertoRMI.getText()));
+
+  }
+
+  private Boolean validarParametros() {
+    if (jTextFieldHost.getText().trim().equals("")) {
+      mostrarError("Debe ingresar el host de la base de datos");
+      return false;
+    }
+
+    if (jTextFieldPuertoBD.getText().trim().equals("")) {
+      mostrarError("Debe ingresar el puerto de la base de datos");
+      return false;
+    }
+
+    if (jTextFieldPuertoRMI.getText().trim().equals("")) {
+      mostrarError("Debe ingresar el puerto RMI");
+      return false;
+    }
+
+    if (jTextFieldNombreBD.getText().trim().equals("")) {
+      mostrarError("Debe ingresar el nombre de la base de datos");
+      return false;
+    }
+
+    if (jTextFieldUsuarioBD.getText().trim().equals("")) {
+      mostrarError("Debe ingresar el usuario de la base de datos");
+      return false;
+    }
+
+    if (new String(jPasswordFieldPasswordBD.getPassword()).trim().equals("")) {
+      mostrarError("Debe ingresar el password de la base de datos");
+      return false;
+    }
+
+
+    return true;
+  }
+
                     
   private javax.swing.JButton jButtonRestart;
   private javax.swing.JButton jButtonStart;
   private javax.swing.JButton jButtonStop;
-  private javax.swing.JLabel jLabel2;
+  private javax.swing.JLabel jLabelNombreBD;
+  private javax.swing.JLabel jLabelUsuarioBD;
   private javax.swing.JLabel jLabelHost;
   private javax.swing.JLabel jLabelPasswordBD;
   private javax.swing.JLabel jLabelPuertoBD;
@@ -255,8 +351,10 @@ public class FramePrincipal extends javax.swing.JFrame
   private javax.swing.JPanel jPanelControles;
   private javax.swing.JPanel jPanelPrincipal;
   private javax.swing.JPasswordField jPasswordFieldPasswordBD;
+  private javax.swing.JProgressBar jProgressBar;
   private javax.swing.JTextField jTextFieldHost;
   private javax.swing.JTextField jTextFieldNombreBD;
+  private javax.swing.JTextField jTextFieldUsuarioBD;
   private javax.swing.JTextField jTextFieldPuertoBD;
   private javax.swing.JTextField jTextFieldPuertoRMI;              
 }
