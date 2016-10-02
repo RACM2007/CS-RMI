@@ -230,7 +230,9 @@ public class FramePrincipal extends javax.swing.JFrame
         .addGap(0, 8, Short.MAX_VALUE))
     );
 
+
     pack();
+    setLocationRelativeTo(null);
     setVisible(true);
   }
 
