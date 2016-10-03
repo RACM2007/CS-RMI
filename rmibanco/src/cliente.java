@@ -7,24 +7,36 @@ import javax.swing.JButton;
 import javax.swing.JTextField;
 import javax.swing.JPanel;
 import java.awt.event.ActionListener;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import javax.swing.JOptionPane;
+import java.rmi.*;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.sql.*;
+import java.rmi.server.UnicastRemoteObject;
 
 
 public class cliente extends JFrame implements ActionListener{
-
+    
+      JButton boton;
+    JLabel cad;
+    JTextField txt;
+    JPanel pan;
+    
     public cliente (){
-//        convertir = new JButton ("Convertir Cadena");
+           boton = new JButton ("Presióname!");
 //        cad = new JLabel ("Escriba su Cadena: ");
 //        txt = new JTextField (20);
-//        pan = new JPanel ();
+        pan = new JPanel ();
 //        
-//        this.add(convertir,BorderLayout.SOUTH);
+        this.add(boton,BorderLayout.SOUTH);
 //        pan.add(cad);
 //        pan.add(txt);
 //        
-//        convertir.addActionListener(this);
+        boton.addActionListener(this);
         
-        //this.add(pan,BorderLayout.CENTER);
+        this.add(pan,BorderLayout.CENTER);
         this.setTitle("Cifrar Cadena");
         this.setSize(500,300);
         this.setVisible(true);
@@ -34,7 +46,29 @@ public class cliente extends JFrame implements ActionListener{
     
     @Override
     public void actionPerformed(ActionEvent e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        Object obj=e.getSource();
+        
+        if(boton==obj){
+            try{
+                System.out.println("dasassdadsasd");
+                Registry registro= LocateRegistry.getRegistry("localhost",1099);
+                
+                bancointer interfaz = (bancointer) registro.lookup("rmi://localhost:1099/bancointer");
+                System.out.println("   1212121");
+                String prop;
+                prop=JOptionPane.showInputDialog("Ingrese el codigo del propietario");
+                
+                if(interfaz.buscar(prop)==null){
+                    JOptionPane.showMessageDialog(null, "No encontrado");
+                }else{
+                    JOptionPane.showMessageDialog(null, interfaz.buscar(prop).getSaldo());
+                }
+                     
+            }catch(Exception ex){
+              JOptionPane.showMessageDialog(null,ex);
+            }
+                
+        }
     }
     
     public static void main(String[] args) {
