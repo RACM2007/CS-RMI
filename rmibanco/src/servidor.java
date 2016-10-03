@@ -11,53 +11,6 @@ class servidor extends UnicastRemoteObject implements bancointer{
         super();
     }
 
-    @Override
-    public cuenta buscar(String prop) throws RemoteException {
-        int id;
-        double saldo;
-        String tipo, fecha;
-        int propietario;
-        
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/banco","root","123456");
-            String sentencia= "select * from cuenta where propietario='"+prop+"'";
-            Statement stm= (Statement) cn.createStatement();
-            ResultSet rs= stm.executeQuery(sentencia);
-            while(rs.next()){
-                System.out.println("tatata");
-                id=rs.getInt(1);
-                System.out.println(id);
-                saldo=rs.getDouble(2);
-                tipo=rs.getString(3);
-                fecha=rs.getString(4);
-                propietario=rs.getInt(5);
-                cuenta cu = new cuenta (id,saldo,tipo,fecha,propietario);
-                return cu;
-                
-            }
-            
-        } catch (Exception e){
-            System.out.print(e);
-        }
-        return null;
-    }
-
-
-    @Override
-    public boolean eliminar(String cod) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean agregar(String id, double saldo, String tipo, String fecha, int prop) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean modificar(String id, double saldo, String tipo, String fecha, int prop) throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
     public static void main(String[] args) {
         try{
@@ -65,7 +18,57 @@ class servidor extends UnicastRemoteObject implements bancointer{
                registro.rebind("rmi://localhost:1099/rmibanco", new servidor());
                JOptionPane.showMessageDialog(null,"Servidor Activo");
            } catch (Exception ex){
-               System.out.println(ex.getMessage());
+               JOptionPane.showMessageDialog(null,ex.getMessage());
            }
     }
+
+    public boolean ingresar(String login, String pass) throws RemoteException {
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/banco","root","123456");
+            String sentencia= "select * from usuario";
+            Statement stm= (Statement) cn.createStatement();
+            ResultSet rs= stm.executeQuery(sentencia);
+            while(rs.next()){
+                if(login.equalsIgnoreCase(rs.getString(2))&&pass.equalsIgnoreCase(rs.getString(3))){
+                    return true;
+                }
+                
+            }
+            
+        } catch (Exception e){
+            System.out.print(e);
+        }
+        return false;
+    }
+
+    @Override
+    public String[][] bcliente() throws RemoteException {
+        String [][] a= new String [50][50];
+        try{
+            Class.forName("com.mysql.jdbc.Driver");
+            Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/banco","root","123456");
+            String sentencia= "select * from cliente";
+            Statement stm= (Statement) cn.createStatement();
+            ResultSet rs= stm.executeQuery(sentencia);
+            
+            int i=0,j=0;
+            while(rs.next()){
+                    a[i][j]=rs.getString(2);
+                    a[i][j+1]=rs.getString(3);
+                    a[i][j+2]=rs.getString(4);
+                    a[i][j+3]=rs.getString(5);
+                    a[i][j+4]=rs.getString(6);
+                i++;
+                
+                
+            }
+            
+        } catch (Exception e){
+            System.out.print(e);
+        }
+        return a;
+    }
+
+    
 }
