@@ -53,7 +53,7 @@ public class cliente extends JFrame implements ActionListener{
                 System.out.println("dasassdadsasd");
                 Registry registro= LocateRegistry.getRegistry("localhost",1099);
                 
-                bancointer interfaz = (bancointer) registro.lookup("rmi://localhost:1099/bancointer");
+                bancointer interfaz = (bancointer) registro.lookup("rmi://localhost:1099/rmibanco");
                 System.out.println("   1212121");
                 String prop;
                 prop=JOptionPane.showInputDialog("Ingrese el codigo del propietario");
