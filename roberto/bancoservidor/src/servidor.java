@@ -7,15 +7,14 @@ import javax.swing.JOptionPane;
 
 class servidor extends UnicastRemoteObject implements bancointer{
 
-    public servidor() throws RemoteException{
-        super();
-    }
-
+    sqlope ope;
     
-    public static void main(String[] args) {
+    public servidor(String dir, int puerto,String dirda, int puertoda, String userda, String passda, String bd) throws RemoteException{
+        super();
         try{
+                ope= new sqlope(dirda, puertoda, userda, passda, bd);
                Registry registro=LocateRegistry.createRegistry(1099);
-               registro.rebind("rmi://localhost:1099/rmibanco", new servidor());
+               registro.rebind("rmi://"+dir+":"+puerto+"/bancoservidor", this);
                JOptionPane.showMessageDialog(null,"Servidor Activo");
            } catch (Exception ex){
                JOptionPane.showMessageDialog(null,ex.getMessage());
@@ -23,23 +22,25 @@ class servidor extends UnicastRemoteObject implements bancointer{
     }
 
     public boolean ingresar(String login, String pass) throws RemoteException {
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/banco","root","123456");
-            String sentencia= "select * from usuario";
-            Statement stm= (Statement) cn.createStatement();
-            ResultSet rs= stm.executeQuery(sentencia);
-            while(rs.next()){
-                if(login.equalsIgnoreCase(rs.getString(2))&&pass.equalsIgnoreCase(rs.getString(3))){
-                    return true;
-                }
-                
-            }
-            
-        } catch (Exception e){
-            System.out.print(e);
-        }
-        return false;
+//        try{
+//            Class.forName("com.mysql.jdbc.Driver");
+//            Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/banco","root","123456");
+//            String sentencia= "select * from usuario";
+//            Statement stm= (Statement) cn.createStatement();
+//            ResultSet rs= stm.executeQuery(sentencia);
+//            while(rs.next()){
+//                if(login.equalsIgnoreCase(rs.getString(2))&&pass.equalsIgnoreCase(rs.getString(3))){
+//                    return true;
+//                }
+//                
+//            }
+//            
+//        } catch (Exception e){
+//            System.out.print(e);
+//        }
+
+        return ope.ingresar(login, pass);
+        
     }
 
     @Override

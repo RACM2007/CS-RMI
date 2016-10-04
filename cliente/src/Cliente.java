@@ -1,4 +1,4 @@
-
+﻿
 import java.rmi.*;
 import java.rmi.registry.*;
 
@@ -15,7 +15,7 @@ public class Cliente {
 
       UsuarioServicio usuarioServicio = (UsuarioServicio) registry.lookup("usuario");
 
-      Usuario usuario = new Usuario("hugo", "sdfasdf");
+      Usuario usuario = new Usuario("hugo", "654321");
       System.out.println("Usuario válido: " + usuarioServicio.esUsuarioValido(usuario));
 
       System.out.println("Fin de cliente!");
