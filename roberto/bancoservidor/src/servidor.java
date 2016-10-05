@@ -22,22 +22,6 @@ class servidor extends UnicastRemoteObject implements bancointer{
     }
 
     public boolean ingresar(String login, String pass) throws RemoteException {
-//        try{
-//            Class.forName("com.mysql.jdbc.Driver");
-//            Connection cn= DriverManager.getConnection("jdbc:mysql://localhost:3306/banco","root","123456");
-//            String sentencia= "select * from usuario";
-//            Statement stm= (Statement) cn.createStatement();
-//            ResultSet rs= stm.executeQuery(sentencia);
-//            while(rs.next()){
-//                if(login.equalsIgnoreCase(rs.getString(2))&&pass.equalsIgnoreCase(rs.getString(3))){
-//                    return true;
-//                }
-//                
-//            }
-//            
-//        } catch (Exception e){
-//            System.out.print(e);
-//        }
 
         return ope.ingresar(login, pass);
         
