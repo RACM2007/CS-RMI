@@ -11,7 +11,7 @@ public class ConexionDB {
             Class.forName("com.mysql.jdbc.Driver");
             con=DriverManager.getConnection("jdbc:mysql://"+ip+":"+puerto+"/"+bd,user,pass);
                 if (con!=null){
-            JOptionPane.showMessageDialog(null,"Coneccion a base de datos Realizada");
+            JOptionPane.showMessageDialog(null,"Coneccion a La Base de Datos Realizada");
          }else{
                     JOptionPane.showMessageDialog(null,"Coneccion a la base de datos no se ha efectuado");
                 }
