@@ -1,9 +1,9 @@
-
 import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 public class sqlope {
@@ -52,6 +52,82 @@ public class sqlope {
             System.out.print(e);
         }
         return a;
+    }
+
+    ArrayList<cliente> datosclientes() throws RemoteException{
+        ArrayList <cliente> dc= new ArrayList();
+        cliente c;
+        try{
+            String sentencia= "select * from cliente";
+            Statement stm= (Statement) con.getConnection().createStatement();
+            ResultSet rs= stm.executeQuery(sentencia);
+  
+            while(rs.next()){
+                
+                c= new cliente(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),rs.getString(6));
+                dc.add(c);
+            }
+            
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error al extraer datos del cliente sqlope");
+        }
+        
+        return dc;
+    }
+
+    ArrayList<movimientos> datosmovi() throws RemoteException{
+        ArrayList <movimientos> dm= new ArrayList();
+        movimientos c;
+        try{
+            String sentencia= "select * from movimientos";
+            Statement stm= (Statement) con.getConnection().createStatement();
+            ResultSet rs= stm.executeQuery(sentencia);
+            while(rs.next()){
+                //System.out.println(rs.getInt(1)+rs.getDouble(2)+rs.getInt(3)+rs.getString(4)+rs.getInt(5)+rs.getString(6)+rs.getInt(7)+rs.getString(8));
+             c= new movimientos(rs.getInt(1), rs.getDouble(2), rs.getInt(3), rs.getString(4), rs.getInt(5),rs.getString(6),rs.getInt(7),rs.getDate(8));
+                dm.add(c);
+            }
+            
+            
+        }catch(Exception e){
+            System.out.println(e);
+            JOptionPane.showMessageDialog(null, "Error al extraer datos del cliente sqlope11"+e);
+        }
+        
+        return dm;
+    }
+
+    ArrayList<cuenta> datoscue() {
+        ArrayList <cuenta> dcu= new ArrayList();
+        cuenta c;
+        try{
+            String sentencia= "select * from cuenta";
+            Statement stm= (Statement) con.getConnection().createStatement();
+            ResultSet rs= stm.executeQuery(sentencia);
+            while(rs.next()){
+                //System.out.println(rs.getInt(1)+rs.getDouble(2)+rs.getInt(3)+rs.getString(4)+rs.getInt(5)+rs.getString(6)+rs.getInt(7)+rs.getString(8));
+             c= new cuenta(rs.getInt(1), rs.getDouble(2), rs.getString(3), rs.getDate(4), rs.getInt(5));
+                dcu.add(c);
+            }
+            
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error al extraer datos del cliente sqlope "+e);
+        }
+        
+        return dcu;
+    }
+
+    void agregarcliente(cliente c) {
+        try{
+            String sentencia= "INSERT INTO `cliente` VALUES ('"+c.id+"', '"+c.dni+"', '"+c.nombre+"', '"+c.apellidop+"', '"+c.apellidom+"', '"+c.telefono+"');";
+            Statement stm= (Statement) con.getConnection().createStatement();
+            //ResultSet rs= stm.executeUpdate(sentencia);
+            
+        } catch (Exception e){
+            System.out.print(e);
+        }
     }
     
 }

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 60011
 File Encoding         : 65001
 
-Date: 2016-09-29 22:42:26
+Date: 2016-10-06 20:41:04
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -80,16 +80,18 @@ CREATE TABLE `movimientos` (
   `origenc` int(11) DEFAULT NULL,
   `origene` varchar(255) DEFAULT NULL,
   `destinoc` int(11) DEFAULT NULL,
+  `fecha` date NOT NULL,
   PRIMARY KEY (`id`),
   KEY `usuario_movimientos_fk` (`usuario`),
   KEY `cuenta_movimientos_fk` (`origenc`),
   CONSTRAINT `cuenta_movimientos_fk` FOREIGN KEY (`origenc`) REFERENCES `cuenta` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `usuario_movimientos_fk` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of movimientos
 -- ----------------------------
+INSERT INTO `movimientos` VALUES ('1', '5', '1', 'transferencia', '1', null, '2', '2016-10-05');
 
 -- ----------------------------
 -- Table structure for usuario
@@ -105,6 +107,6 @@ CREATE TABLE `usuario` (
 -- ----------------------------
 -- Records of usuario
 -- ----------------------------
-INSERT INTO `usuario` VALUES ('1', 'racm', '123456');
-INSERT INTO `usuario` VALUES ('2', 'hugo', '654321');
+INSERT INTO `usuario` VALUES ('1', 'racm', '1234');
+INSERT INTO `usuario` VALUES ('2', 'hugo', '4321');
 INSERT INTO `usuario` VALUES ('3', 'admin', 'admin');

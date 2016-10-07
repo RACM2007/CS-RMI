@@ -3,6 +3,7 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.sql.*;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 class servidor extends UnicastRemoteObject implements bancointer{
@@ -53,6 +54,26 @@ class servidor extends UnicastRemoteObject implements bancointer{
             System.out.print(e);
         }
         return a;
+    }
+
+    public ArrayList<cliente> datosclientes() throws RemoteException{
+        ArrayList <cliente> dc= ope.datosclientes();
+        return dc;
+    
+    }
+
+    public ArrayList<movimientos> datosmov() throws RemoteException {
+        ArrayList <movimientos> dm= ope.datosmovi();
+        return dm;
+    }
+    
+    public ArrayList<cuenta> datoscue() throws RemoteException {
+        ArrayList <cuenta> dcu= ope.datoscue();
+        return dcu;
+    }
+
+    public void agregarcliente(cliente c) throws RemoteException {
+        ope.agregarcliente(c);
     }
 
     
