@@ -10,6 +10,11 @@ public class cuenta implements Serializable{
     Date fechaa;
     int propietario;
 
+    public cuenta() {
+    }
+    
+    
+
     public cuenta(int id, double saldo, String tipo, Date fechaa, int propietario) {
         this.id = id;
         this.saldo = saldo;

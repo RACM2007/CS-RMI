@@ -76,5 +76,10 @@ class servidor extends UnicastRemoteObject implements bancointer{
         ope.agregarcliente(c);
     }
 
+    @Override
+    public void agregarCuenta(cuenta c) throws RemoteException {
+        ope.agregarcuenta(c);
+    }
+
     
 }

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import javax.swing.JOptionPane;
 
 public class sqlope {
@@ -128,6 +129,21 @@ public class sqlope {
             statement.setString(3, c.apellidop);
             statement.setString(4, c.apellidom);
             statement.setString(5, c.telefono);
+            
+            statement.executeUpdate();
+            
+        } catch (Exception e){
+            System.out.print(e);
+        }
+    }
+    
+    void agregarcuenta(cuenta c) {
+        try{
+            PreparedStatement statement = con.getConnection().prepareStatement("INSERT INTO `cuenta` (saldo, tipo, fechaa, propietario) VALUES (?,?,?,?)");
+            statement.setDouble(1, 0);
+            statement.setString(2, c.tipo);
+            statement.setDate(3, new java.sql.Date(new Date().getTime()));
+            statement.setInt(4, c.propietario);
             
             statement.executeUpdate();
             
