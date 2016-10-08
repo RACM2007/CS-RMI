@@ -9,7 +9,10 @@ public class cliente implements Serializable{
     String apellidop;
     String apellidom;
     String telefono;
-
+    
+    public cliente() {
+    }
+    
     public cliente(int id, String dni, String nombre, String apellidop, String apellidom, String telefono) {
         this.id = id;
         this.dni=dni;

@@ -2,7 +2,8 @@
 import java.io.Serializable;
 
 
-public class cliente implements Serializable{
+public class cliente implements Serializable {
+    
     int id;
     String dni;
     String nombre;
@@ -10,6 +11,9 @@ public class cliente implements Serializable{
     String apellidom;
     String telefono;
 
+    public cliente() {
+    }
+    
     public cliente(int id, String dni, String nombre, String apellidop, String apellidom, String telefono) {
         this.id = id;
         this.dni=dni;

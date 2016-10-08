@@ -1,6 +1,7 @@
 import java.rmi.RemoteException;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -121,9 +122,14 @@ public class sqlope {
 
     void agregarcliente(cliente c) {
         try{
-            String sentencia= "INSERT INTO `cliente` VALUES ('"+c.id+"', '"+c.dni+"', '"+c.nombre+"', '"+c.apellidop+"', '"+c.apellidom+"', '"+c.telefono+"');";
-            Statement stm= (Statement) con.getConnection().createStatement();
-            //ResultSet rs= stm.executeUpdate(sentencia);
+            PreparedStatement statement = con.getConnection().prepareStatement("INSERT INTO `cliente` (dni, nombre, apellidop, apellidom, telefono) VALUES (?,?,?,?,?)");
+            statement.setString(1, c.dni);
+            statement.setString(2, c.nombre);
+            statement.setString(3, c.apellidop);
+            statement.setString(4, c.apellidom);
+            statement.setString(5, c.telefono);
+            
+            statement.executeUpdate();
             
         } catch (Exception e){
             System.out.print(e);
