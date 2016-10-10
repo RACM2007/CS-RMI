@@ -59,6 +59,11 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         }
 
         initComponents();
+        transparencia();
+        
+        sfondo f = new sfondo ();
+        this.add(f, BorderLayout.CENTER);
+        
         btsalir.addActionListener(this);
         btaccli.addActionListener(this);
         btacmov.addActionListener(this);
@@ -75,6 +80,19 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         actualizartablamov();
         actualizartablacuentas();
 
+    }
+    
+     private void transparencia() {
+             
+        jPanelClientes.setOpaque(false);
+        jPanelMovimientos.setOpaque(false);
+        jPanelCuentas.setOpaque(false);
+        jPanel1.setOpaque(false);
+        btacmov.setOpaque(false);
+        btaccli.setOpaque(false);
+        btaccue.setOpaque(false);
+        btsalir.setOpaque(false);
+        jButton7.setOpaque(false);
     }
 
     @SuppressWarnings("unchecked")
@@ -103,6 +121,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         btagregarcli = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
         jButton8 = new javax.swing.JButton();
+        btagregarcli1 = new javax.swing.JButton();
         jPanelCuentas = new javax.swing.JPanel();
         btaccue = new javax.swing.JButton();
         jScrollPane2 = new javax.swing.JScrollPane();
@@ -123,7 +142,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         jScrollPane1 = new javax.swing.JScrollPane();
         tablamov = new javax.swing.JTable();
         jLabel9 = new javax.swing.JLabel();
-        jComboBoxTipoMov = new javax.swing.JComboBox<String>();
+        jComboBoxTipoMov = new javax.swing.JComboBox<>();
         jLabel10 = new javax.swing.JLabel();
         jLabel11 = new javax.swing.JLabel();
         jLabel12 = new javax.swing.JLabel();
@@ -137,14 +156,16 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
 
-        jLabel3.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
-        jLabel3.setText("BIENVENIDO AL SISTEMA BANCARIO");
+        jLabel3.setFont(new java.awt.Font("Calibri", 1, 36)); // NOI18N
+        jLabel3.setText("SISTEMA BANCARIO RMI");
 
+        btsalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/salir.png"))); // NOI18N
         btsalir.setText("SALIR DEL SISTEMA");
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel1.setText("Clientes:");
 
+        btaccli.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/reload.png"))); // NOI18N
         btaccli.setText("ACTUALIZAR");
 
         tablacli.setModel(new javax.swing.table.DefaultTableModel(
@@ -179,6 +200,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
 
         jLabel6.setText("APELLIDO MATERNO:");
 
+        btagregarcli.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/new.png"))); // NOI18N
         btagregarcli.setText("NUEVO");
         btagregarcli.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -186,6 +208,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
             }
         });
 
+        jButton4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/save.png"))); // NOI18N
         jButton4.setText("GUARDAR");
         jButton4.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -193,56 +216,68 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
             }
         });
 
+        jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         jButton8.setText("ELIMINAR");
+
+        btagregarcli1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit.png"))); // NOI18N
+        btagregarcli1.setText("MODIFICAR");
+        btagregarcli1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btagregarcli1ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanelClientesLayout = new javax.swing.GroupLayout(jPanelClientes);
         jPanelClientes.setLayout(jPanelClientesLayout);
         jPanelClientesLayout.setHorizontalGroup(
             jPanelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelClientesLayout.createSequentialGroup()
-                .addGroup(jPanelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(jPanelClientesLayout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(jPanelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelClientesLayout.createSequentialGroup()
-                                .addComponent(txtcc, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtcd, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtcam, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanelClientesLayout.createSequentialGroup()
-                                .addComponent(jLabel8)
-                                .addGap(61, 61, 61)
-                                .addComponent(jLabel2)
-                                .addGap(93, 93, 93)
-                                .addComponent(jLabel7))
-                            .addGroup(jPanelClientesLayout.createSequentialGroup()
-                                .addComponent(jLabel4)
-                                .addGap(101, 101, 101)
-                                .addComponent(jLabel5)
-                                .addGap(87, 87, 87)
-                                .addComponent(jLabel6))
-                            .addGroup(jPanelClientesLayout.createSequentialGroup()
-                                .addComponent(txtcn, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtcap, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(txtct))))
-                    .addGroup(jPanelClientesLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btaccli, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(jPanelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanelClientesLayout.createSequentialGroup()
+                            .addGap(21, 21, 21)
+                            .addGroup(jPanelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanelClientesLayout.createSequentialGroup()
+                                    .addComponent(txtcc, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtcd, javax.swing.GroupLayout.PREFERRED_SIZE, 110, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtcam, javax.swing.GroupLayout.PREFERRED_SIZE, 135, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGroup(jPanelClientesLayout.createSequentialGroup()
+                                    .addComponent(jLabel8)
+                                    .addGap(61, 61, 61)
+                                    .addComponent(jLabel2)
+                                    .addGap(93, 93, 93)
+                                    .addComponent(jLabel7))
+                                .addGroup(jPanelClientesLayout.createSequentialGroup()
+                                    .addComponent(jLabel4)
+                                    .addGap(101, 101, 101)
+                                    .addComponent(jLabel5)
+                                    .addGap(87, 87, 87)
+                                    .addComponent(jLabel6))
+                                .addGroup(jPanelClientesLayout.createSequentialGroup()
+                                    .addComponent(txtcn, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtcap, javax.swing.GroupLayout.PREFERRED_SIZE, 181, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                    .addComponent(txtct))))
+                        .addGroup(jPanelClientesLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jLabel1)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(btaccli, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanelClientesLayout.createSequentialGroup()
+                            .addContainerGap()
+                            .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 562, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jPanelClientesLayout.createSequentialGroup()
                         .addGap(70, 70, 70)
                         .addComponent(btagregarcli, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(btagregarcli1)
+                        .addGap(11, 11, 11)
+                        .addComponent(jButton4)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jButton8, javax.swing.GroupLayout.PREFERRED_SIZE, 104, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanelClientesLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 562, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jButton8)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelClientesLayout.setVerticalGroup(
@@ -278,10 +313,12 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                 .addGroup(jPanelClientesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton4)
                     .addComponent(btagregarcli, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton8))
+                    .addComponent(jButton8)
+                    .addComponent(btagregarcli1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
+        btaccue.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/reload.png"))); // NOI18N
         btaccue.setText("ACTUALIZAR");
 
         tablacue.setModel(new javax.swing.table.DefaultTableModel(
@@ -305,6 +342,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
 
         txtcuedni.setEditable(false);
 
+        jButton11.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/new.png"))); // NOI18N
         jButton11.setText("AGREGAR CUENTA");
         jButton11.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -312,6 +350,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
             }
         });
 
+        jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         jButton12.setText("ELIMINAR CUENTA");
 
         jLabel16.setText("TIPO:");
@@ -325,9 +364,6 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton11))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -340,9 +376,14 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel17)
-                    .addComponent(txtcuedni, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton12))
+                    .addComponent(txtcuedni, javax.swing.GroupLayout.PREFERRED_SIZE, 131, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(127, 127, 127))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(117, 117, 117)
+                .addComponent(jButton11)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton12)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -379,9 +420,11 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 566, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanelCuentasLayout.createSequentialGroup()
                         .addGroup(jPanelCuentasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(btaccue, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jLabel14))
+                            .addComponent(jLabel14)
+                            .addGroup(jPanelCuentasLayout.createSequentialGroup()
+                                .addGap(203, 203, 203)
+                                .addComponent(btaccue, javax.swing.GroupLayout.PREFERRED_SIZE, 149, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -401,6 +444,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         jLabel13.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel13.setText("Movimientos:");
 
+        btacmov.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/reload.png"))); // NOI18N
         btacmov.setText("ACTUALIZAR");
 
         tablamov.setModel(new javax.swing.table.DefaultTableModel(
@@ -418,7 +462,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
 
         jLabel9.setText("Tipo:");
 
-        jComboBoxTipoMov.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DEPOSITO", "RETIRO", "TRANSFERENCIA" }));
+        jComboBoxTipoMov.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "DEPOSITO", "RETIRO", "TRANSFERENCIA" }));
         jComboBoxTipoMov.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 jComboBoxTipoMovItemStateChanged(evt);
@@ -431,6 +475,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
 
         jLabel12.setText("Monto:");
 
+        jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/bank.png"))); // NOI18N
         jButton7.setText("REALIZAR MOVIMIENTO BANCARIO");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -513,8 +558,8 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                 .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(txtMontoMovimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
-                .addGap(18, 18, 18)
-                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(35, Short.MAX_VALUE))
         );
 
@@ -526,7 +571,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                 .addGap(476, 476, 476)
                 .addComponent(jLabel3)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btsalir, javax.swing.GroupLayout.PREFERRED_SIZE, 130, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btsalir)
                 .addGap(30, 30, 30))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
@@ -671,6 +716,10 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         }
     }//GEN-LAST:event_jButton7ActionPerformed
 
+    private void btagregarcli1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btagregarcli1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btagregarcli1ActionPerformed
+
     private void clearMovimientoForm() {
         txtDniOrigen.setText("");
         txtCuentaOrigen.setText("");
@@ -695,6 +744,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JButton btaccue;
     private javax.swing.JButton btacmov;
     private javax.swing.JButton btagregarcli;
+    private javax.swing.JButton btagregarcli1;
     private javax.swing.JButton btsalir;
     private javax.swing.JComboBox comboTipoCuenta;
     private javax.swing.JButton jButton11;
@@ -1029,4 +1079,6 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
 
         return true;
     }
+
+   
 }
