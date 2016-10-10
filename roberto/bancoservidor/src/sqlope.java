@@ -3,12 +3,18 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import javax.swing.JOptionPane;
 
 public class sqlope {
+    
+    public static final String RETIRO = "RETIRO";
+    public static final String DEPOSITO = "DEPOSITO";
+    public static final String TRANSFERENCIA = "TRANSFERENCIA";
+    
     ConexionDB con;
     
     public sqlope(String ip, int puerto, String user, String pass, String bd){
@@ -150,6 +156,191 @@ public class sqlope {
         } catch (Exception e){
             System.out.print(e);
         }
+    }
+    
+    cuenta obtenerCuentaPorId(Integer id) {
+        cuenta cuenta = null;
+        try{
+            String query = "select * from cuenta where id=?";
+            PreparedStatement statement = con.getConnection().prepareStatement(query);
+            statement.setInt(1, id);
+            
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                cuenta = new cuenta();
+                cuenta.setId(rs.getInt(1));
+                cuenta.setSaldo(rs.getDouble(2));
+                cuenta.setTipo(rs.getString(3));
+                cuenta.setFechaa(rs.getDate(4));
+                cuenta.setPropietario(rs.getInt(5));
+            }
+        } catch (Exception e) {
+            
+        }
+        return cuenta;
+    }
+    
+    Integer obtenerUsuarioId(String username) {
+        Integer userId = null;
+        try{
+            String query = "select id from usuario where login=?";
+            PreparedStatement statement = con.getConnection().prepareStatement(query);
+            statement.setString(1, username);
+            
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                userId = rs.getInt(1);
+            }
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+        
+        System.out.println("UserID: " + userId + ", Username: " + username);
+        return userId;
+    }
+    
+    void actualizarCuenta(cuenta cuenta, Connection connection) {
+        try{
+            String query = "UPDATE cuenta SET saldo=?, tipo=?, fechaa=?, propietario=? WHERE id=?";
+            PreparedStatement statement =connection.prepareStatement(query);
+            statement.setDouble(1, cuenta.saldo);
+            statement.setString(2, cuenta.tipo);
+            statement.setDate(3, cuenta.fechaa);
+            statement.setInt(4, cuenta.propietario);
+            statement.setInt(5, cuenta.id);
+            statement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+    
+    void agregarMovimiento(movimientos mov, Connection connection) {
+        try{
+            String query = "INSERT INTO movimientos (monto, usuario, tipo, origenc, origene, destinoc, fecha) VALUES (?,?,?,?,?,?,?)";
+            PreparedStatement statement = connection.prepareStatement(query);
+            statement.setDouble(1, mov.monto);
+            statement.setInt(2, mov.usuario);
+            statement.setString(3, mov.tipo);
+            
+            if (mov.origenc == null) {
+                statement.setNull(4, java.sql.Types.INTEGER);
+            } else {
+                statement.setInt(4, mov.origenc);
+            }
+            
+            if (mov.origene == null) {
+                statement.setNull(5, java.sql.Types.VARCHAR);
+            } else {
+                statement.setString(5, mov.origene);
+            }
+            
+            if (mov.destinoc == null) {
+                statement.setNull(6, java.sql.Types.INTEGER);
+            } else {
+                statement.setInt(6, mov.destinoc);
+            }
+            
+            statement.setDate(7, new java.sql.Date(new Date().getTime()));
+            statement.executeUpdate();
+        } catch (Exception e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+    
+    Connection getConnection() {
+        return con.getConnection();
+    }
+    
+    public RespuestaServidor agregarMovimiento(movimientos mov, String username) throws RemoteException {
+        RespuestaServidor resp = null;
+        Connection connection = null;
+        try {
+            connection = this.con.getConnection();
+            connection.setAutoCommit(false);
+            Integer userId = obtenerUsuarioId(username);
+            
+            mov.usuario = userId;
+            switch (mov.tipo) {
+                case RETIRO:
+                    resp = retiro(mov, connection);
+                    break;
+                case TRANSFERENCIA:
+                    resp = transferencia(mov, connection);
+                    break;
+                case DEPOSITO:
+                    resp = deposito(mov, connection);
+                    break;
+            }
+            connection.commit();
+        } catch (BusinessException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {}
+            resp = RespuestaServidor.getError(e.getMessage());
+        } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {}
+            resp = RespuestaServidor.getError("Error al procesar, transacción cancelada.");
+        }
+        
+        return resp;
+    }
+    
+    private RespuestaServidor retiro(movimientos mov, Connection connection) throws BusinessException {
+        cuenta cuentaOrigen = obtenerCuentaPorId(mov.origenc);
+                
+        if (cuentaOrigen == null) {
+            throw new BusinessException("Cuenta de origen del retiro inexistente, trasacción cancelada.");
+        }
+
+        if (cuentaOrigen.saldo < mov.monto) {
+            throw new BusinessException("Saldo insuficiente para realizar el retiro, trasacción cancelada.");
+        } 
+        cuentaOrigen.saldo -= mov.monto;
+        
+        actualizarCuenta(cuentaOrigen, connection);
+        agregarMovimiento(mov, connection);
+        return RespuestaServidor.getExito("Retiro realzado con exitosamente");
+    }
+    
+    private RespuestaServidor transferencia(movimientos mov, Connection connection) throws BusinessException {
+        cuenta cuentaOrigen = obtenerCuentaPorId(mov.origenc);
+        cuenta cuentaDestino = obtenerCuentaPorId(mov.destinoc);
+
+        if (cuentaOrigen == null) {
+            throw new BusinessException("Cuenta de origen de la transferencia inexistente, trasacción cancelada.");
+        }
+
+        if (cuentaDestino == null) {
+            throw new BusinessException("Cuenta de destino de la transferencia inexistente, trasacción cancelada.");
+        }
+
+        if (cuentaOrigen.saldo < mov.monto) {
+            throw new BusinessException("Saldo insuficiente para realizar la transferencia, trasacción cancelada.");
+        }
+
+        cuentaOrigen.saldo -= mov.monto;
+        cuentaDestino.saldo += mov.monto;
+        
+        actualizarCuenta(cuentaOrigen, connection);
+        actualizarCuenta(cuentaDestino, connection);
+        agregarMovimiento(mov, connection);
+        return RespuestaServidor.getExito("Transferencia realzada con exitosamente.");
+    }
+    
+    private RespuestaServidor deposito(movimientos mov, Connection connection) throws BusinessException {
+        cuenta cuentaDestino = obtenerCuentaPorId(mov.destinoc);
+                
+        if (cuentaDestino == null) {
+            throw new BusinessException("Cuenta de destino del deposito inexistente, trasacción cancelada.");
+        }
+
+        cuentaDestino.saldo += mov.monto;
+        
+        actualizarCuenta(cuentaDestino, connection);
+        agregarMovimiento(mov, connection);
+        return RespuestaServidor.getExito("Deposito realzado con exitosamente.");
     }
     
 }

@@ -3,6 +3,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.*;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -10,69 +11,71 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
-public class clientermi extends javax.swing.JFrame implements ActionListener{
-    
+public class clientermi extends javax.swing.JFrame implements ActionListener {
+
+    public static final String RETIRO = "RETIRO";
+    public static final String DEPOSITO = "DEPOSITO";
+    public static final String TRANSFERENCIA = "TRANSFERENCIA";
+
     private cliente clienteActual;
-    
+
     String direccion;
     int puerto;
     bancointer interfaz;
-    
 
-    public clientermi(){
-        
-        try{
-        JPanel panel = new JPanel(new BorderLayout(5, 5));
+    public clientermi() {
 
-    JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
-    label.add(new JLabel("Dirección", SwingConstants.RIGHT));
-    label.add(new JLabel("Puerto", SwingConstants.RIGHT));
-    panel.add(label, BorderLayout.WEST);
+        try {
+            JPanel panel = new JPanel(new BorderLayout(5, 5));
 
-    JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
-    JTextField direc = new JTextField();
-    controls.add(direc);
-    JTextField puert = new JTextField();
-    controls.add(puert);
-    panel.add(controls, BorderLayout.CENTER);
+            JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
+            label.add(new JLabel("Dirección", SwingConstants.RIGHT));
+            label.add(new JLabel("Puerto", SwingConstants.RIGHT));
+            panel.add(label, BorderLayout.WEST);
 
-    JOptionPane.showMessageDialog( null,panel, "Conexión RMI", JOptionPane.QUESTION_MESSAGE);
-        
-        direccion=direc.getText();
-        puerto=Integer.parseInt(puert.getText());
-            System.out.println(direccion+" "+puerto);
-        
-        Registry registro= LocateRegistry.getRegistry(direccion,puerto);     
-       interfaz = (bancointer) registro.lookup("rmi://"+direccion+":"+puerto+"/bancoservidor");
-        }catch(Exception ex){
+            JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
+            JTextField direc = new JTextField();
+            controls.add(direc);
+            JTextField puert = new JTextField();
+            controls.add(puert);
+            panel.add(controls, BorderLayout.CENTER);
+
+            JOptionPane.showMessageDialog(null, panel, "Conexión RMI", JOptionPane.QUESTION_MESSAGE);
+
+            direccion = direc.getText();
+            puerto = Integer.parseInt(puert.getText());
+            System.out.println(direccion + " " + puerto);
+
+            Registry registro = LocateRegistry.getRegistry(direccion, puerto);
+            interfaz = (bancointer) registro.lookup("rmi://" + direccion + ":" + puerto + "/bancoservidor");
+        } catch (Exception ex) {
             System.out.println(ex);
         }
-        
-        boolean i= ingresar();
-        while(i==false){
+
+        boolean i = ingresar();
+        while (i == false) {
             JOptionPane.showMessageDialog(null, "Error en el Login o la Contraseña");
-             i=ingresar();
+            i = ingresar();
         }
-        
+
         initComponents();
         btsalir.addActionListener(this);
         btaccli.addActionListener(this);
         btacmov.addActionListener(this);
         btaccue.addActionListener(this);
         btagregarcli.addActionListener(this);
-        
+
         this.setExtendedState(this.MAXIMIZED_BOTH);
         this.setVisible(true);
-       //this.setLocationRelativeTo(null);
+        //this.setLocationRelativeTo(null);
         //this.setResizable(false);
         this.setTitle("BANCO RMI");
-        
+
         actualizartablaclientes();
         actualizartablamov();
         actualizartablacuentas();
-        
-    }
 
+    }
 
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -120,15 +123,16 @@ public class clientermi extends javax.swing.JFrame implements ActionListener{
         jScrollPane1 = new javax.swing.JScrollPane();
         tablamov = new javax.swing.JTable();
         jLabel9 = new javax.swing.JLabel();
-        jComboBox1 = new javax.swing.JComboBox<String>();
+        jComboBoxTipoMov = new javax.swing.JComboBox<String>();
         jLabel10 = new javax.swing.JLabel();
-        jComboBox2 = new javax.swing.JComboBox<String>();
         jLabel11 = new javax.swing.JLabel();
-        jComboBox3 = new javax.swing.JComboBox<String>();
         jLabel12 = new javax.swing.JLabel();
-        jTextField6 = new javax.swing.JTextField();
-        jButton9 = new javax.swing.JButton();
+        txtMontoMovimiento = new javax.swing.JTextField();
         jButton7 = new javax.swing.JButton();
+        txtCuentaOrigen = new javax.swing.JTextField();
+        txtCuentaDestino = new javax.swing.JTextField();
+        txtDniOrigen = new javax.swing.JTextField();
+        jLabel18 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -414,21 +418,29 @@ public class clientermi extends javax.swing.JFrame implements ActionListener{
 
         jLabel9.setText("Tipo:");
 
-        jComboBox1.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
+        jComboBoxTipoMov.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "DEPOSITO", "RETIRO", "TRANSFERENCIA" }));
+        jComboBoxTipoMov.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                jComboBoxTipoMovItemStateChanged(evt);
+            }
+        });
 
         jLabel10.setText("Cuenta Origen:");
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
-
         jLabel11.setText("Cuenta Destino:");
-
-        jComboBox3.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Item 1", "Item 2", "Item 3", "Item 4" }));
 
         jLabel12.setText("Monto:");
 
-        jButton9.setText("VALIDAR MOVIMIENTO");
-
         jButton7.setText("REALIZAR MOVIMIENTO BANCARIO");
+        jButton7.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton7ActionPerformed(evt);
+            }
+        });
+
+        txtCuentaOrigen.setEnabled(false);
+
+        jLabel18.setText("Dni Origen:");
 
         javax.swing.GroupLayout jPanelMovimientosLayout = new javax.swing.GroupLayout(jPanelMovimientos);
         jPanelMovimientos.setLayout(jPanelMovimientosLayout);
@@ -436,11 +448,6 @@ public class clientermi extends javax.swing.JFrame implements ActionListener{
             jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMovimientosLayout.createSequentialGroup()
                 .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanelMovimientosLayout.createSequentialGroup()
-                        .addGap(186, 186, 186)
-                        .addComponent(jButton9)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton7))
                     .addGroup(jPanelMovimientosLayout.createSequentialGroup()
                         .addContainerGap()
                         .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -451,23 +458,30 @@ public class clientermi extends javax.swing.JFrame implements ActionListener{
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(jPanelMovimientosLayout.createSequentialGroup()
                                 .addGap(157, 157, 157)
-                                .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                                     .addGroup(jPanelMovimientosLayout.createSequentialGroup()
-                                        .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jLabel9)
-                                            .addComponent(jLabel10, javax.swing.GroupLayout.Alignment.TRAILING))
-                                        .addGap(24, 24, 24)
-                                        .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jComboBox1, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                                        .addComponent(jLabel9)
+                                        .addGap(74, 74, 74)
+                                        .addComponent(jComboBoxTipoMov, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanelMovimientosLayout.createSequentialGroup()
                                         .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                             .addComponent(jLabel11)
                                             .addComponent(jLabel12))
                                         .addGap(18, 18, 18)
-                                        .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(jTextField6)
-                                            .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))))))
+                                        .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtMontoMovimiento)
+                                            .addComponent(txtCuentaDestino)))
+                                    .addGroup(jPanelMovimientosLayout.createSequentialGroup()
+                                        .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jLabel10)
+                                            .addComponent(jLabel18))
+                                        .addGap(24, 24, 24)
+                                        .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(txtDniOrigen)
+                                            .addComponent(txtCuentaOrigen)))))))
+                    .addGroup(jPanelMovimientosLayout.createSequentialGroup()
+                        .addGap(237, 237, 237)
+                        .addComponent(jButton7)))
                 .addContainerGap(46, Short.MAX_VALUE))
         );
         jPanelMovimientosLayout.setVerticalGroup(
@@ -482,24 +496,26 @@ public class clientermi extends javax.swing.JFrame implements ActionListener{
                 .addGap(18, 18, 18)
                 .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
-                    .addComponent(jComboBox1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(jComboBoxTipoMov, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel18)
+                    .addComponent(txtDniOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel10)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel11)
-                    .addComponent(jComboBox3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                    .addComponent(txtCuentaOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jTextField6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel11)
+                    .addComponent(txtCuentaDestino, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(txtMontoMovimiento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jLabel12))
                 .addGap(18, 18, 18)
-                .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton9, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(35, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -529,12 +545,14 @@ public class clientermi extends javax.swing.JFrame implements ActionListener{
                     .addComponent(btsalir, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanelMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanelClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanelCuentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addGap(16, 16, 16))
+                        .addComponent(jPanelCuentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(16, 16, 16))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanelMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
         );
 
         pack();
@@ -546,9 +564,11 @@ public class clientermi extends javax.swing.JFrame implements ActionListener{
     }//GEN-LAST:event_btagregarcliActionPerformed
 
     private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        
-        if (!esFormClienteValido()) return;
-        
+
+        if (!esFormClienteValido()) {
+            return;
+        }
+
         clienteActual = readClienteForm();
         try {
             interfaz.agregarcliente(clienteActual);
@@ -559,18 +579,18 @@ public class clientermi extends javax.swing.JFrame implements ActionListener{
         actualizartablaclientes();
         clienteActual = new cliente();
         fillClienteForm(clienteActual);
-        
+
     }//GEN-LAST:event_jButton4ActionPerformed
 
     private void tablacliMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablacliMouseClicked
         int row = tablacli.rowAtPoint(evt.getPoint());
         if (row >= 0) {
-            int id = (Integer)tablacli.getModel().getValueAt(row, 0);
-            String dni = (String)tablacli.getModel().getValueAt(row, 1);
-            String nombre = (String)tablacli.getModel().getValueAt(row, 2);
-            String apellidoP = (String)tablacli.getModel().getValueAt(row, 3);
-            String apellidoM = (String)tablacli.getModel().getValueAt(row, 4);
-            String telefono = (String)tablacli.getModel().getValueAt(row, 5);
+            int id = (Integer) tablacli.getModel().getValueAt(row, 0);
+            String dni = (String) tablacli.getModel().getValueAt(row, 1);
+            String nombre = (String) tablacli.getModel().getValueAt(row, 2);
+            String apellidoP = (String) tablacli.getModel().getValueAt(row, 3);
+            String apellidoM = (String) tablacli.getModel().getValueAt(row, 4);
+            String telefono = (String) tablacli.getModel().getValueAt(row, 5);
             clienteActual = new cliente(id, dni, nombre, apellidoP, apellidoM, telefono);
             fillClienteForm(clienteActual);
         }
@@ -588,18 +608,88 @@ public class clientermi extends javax.swing.JFrame implements ActionListener{
         actualizartablacuentas();
     }//GEN-LAST:event_jButton11ActionPerformed
 
-    public static void main(String args[]) {
-      
-        
-        try{
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        }catch(Exception e){
-            
+    private void jComboBoxTipoMovItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_jComboBoxTipoMovItemStateChanged
+        if (evt.getStateChange() == ItemEvent.SELECTED) {
+            String item = (String) evt.getItem();
+
+            clearMovimientoForm();
+
+            switch (item) {
+                case RETIRO:
+                    txtDniOrigen.setEnabled(false);
+                    txtCuentaOrigen.setEnabled(true);
+                    txtCuentaDestino.setEnabled(false);
+                    break;
+                case TRANSFERENCIA:
+                    txtDniOrigen.setEnabled(false);
+                    txtCuentaOrigen.setEnabled(true);
+                    txtCuentaDestino.setEnabled(true);
+                    break;
+                case DEPOSITO:
+                    txtDniOrigen.setEnabled(true);
+                    txtCuentaOrigen.setEnabled(false);
+                    txtCuentaDestino.setEnabled(true);
+                    break;
+            }
         }
-        
+    }//GEN-LAST:event_jComboBoxTipoMovItemStateChanged
+
+    private void jButton7ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7ActionPerformed
+        if (esMovimientoFormValido()) {
+            movimientos mov = new movimientos();
+            mov.tipo = jComboBoxTipoMov.getSelectedItem().toString();
+
+            switch (mov.tipo) {
+                case DEPOSITO:
+                    mov.origene = txtDniOrigen.getText();
+                    mov.destinoc = Integer.parseInt(txtCuentaDestino.getText());
+                    break;
+                case RETIRO:
+                    mov.origenc = Integer.parseInt(txtCuentaOrigen.getText());
+                    break;
+                case TRANSFERENCIA:
+                    mov.origenc = Integer.parseInt(txtCuentaOrigen.getText());
+                    mov.destinoc = Integer.parseInt(txtCuentaDestino.getText());
+                    break;
+            }
+
+            mov.monto = Double.valueOf(txtMontoMovimiento.getText());
+
+            try {
+                RespuestaServidor resp = interfaz.agregarMovimiento(mov, strUsername);
+                if (resp.esExito()) {
+                    showInfo(resp.getMsg());
+                    clearMovimientoForm();
+                    actualizartablacuentas();
+                    actualizartablamov();
+                } else {
+                    showError(resp.getMsg());
+                }
+            } catch (RemoteException ex) {
+                showError("Error al conectar con el servidor.");
+            }
+        }
+    }//GEN-LAST:event_jButton7ActionPerformed
+
+    private void clearMovimientoForm() {
+        txtDniOrigen.setText("");
+        txtCuentaOrigen.setText("");
+        txtCuentaDestino.setText("");
+        txtMontoMovimiento.setText("");
+    }
+
+    public static void main(String args[]) {
+
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+
+        }
+
         new clientermi();
     }
 
+    private String strUsername;
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btaccli;
     private javax.swing.JButton btaccue;
@@ -612,10 +702,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JButton jButton4;
     private javax.swing.JButton jButton7;
     private javax.swing.JButton jButton8;
-    private javax.swing.JButton jButton9;
-    private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
-    private javax.swing.JComboBox<String> jComboBox3;
+    private javax.swing.JComboBox<String> jComboBoxTipoMov;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel11;
@@ -625,6 +712,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JLabel jLabel15;
     private javax.swing.JLabel jLabel16;
     private javax.swing.JLabel jLabel17;
+    private javax.swing.JLabel jLabel18;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -640,11 +728,14 @@ public class clientermi extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
-    private javax.swing.JTextField jTextField6;
     private javax.swing.JTextField jTextField7;
     private javax.swing.JTable tablacli;
     private javax.swing.JTable tablacue;
     private javax.swing.JTable tablamov;
+    private javax.swing.JTextField txtCuentaDestino;
+    private javax.swing.JTextField txtCuentaOrigen;
+    private javax.swing.JTextField txtDniOrigen;
+    private javax.swing.JTextField txtMontoMovimiento;
     private javax.swing.JTextField txtcam;
     private javax.swing.JTextField txtcap;
     private javax.swing.JTextField txtcc;
@@ -655,171 +746,171 @@ public class clientermi extends javax.swing.JFrame implements ActionListener{
     // End of variables declaration//GEN-END:variables
 
     private boolean ingresar() {
-        try{
-        JPanel paneli = new JPanel(new BorderLayout(5, 5));
-        JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
-    label.add(new JLabel("Login", SwingConstants.RIGHT));
-    label.add(new JLabel("Password", SwingConstants.RIGHT));
-    paneli.add(label, BorderLayout.WEST);
+        try {
+            JPanel paneli = new JPanel(new BorderLayout(5, 5));
+            JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
+            label.add(new JLabel("Login", SwingConstants.RIGHT));
+            label.add(new JLabel("Password", SwingConstants.RIGHT));
+            paneli.add(label, BorderLayout.WEST);
 
-    JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
-    JTextField username = new JTextField();
-    controls.add(username);
-    JPasswordField password = new JPasswordField();
-    controls.add(password);
-    paneli.add(controls, BorderLayout.CENTER);
-     
+            JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
+            JTextField username = new JTextField();
+            controls.add(username);
+            JPasswordField password = new JPasswordField();
+            controls.add(password);
+            paneli.add(controls, BorderLayout.CENTER);
 
-    JOptionPane.showMessageDialog( null,paneli, "login", JOptionPane.QUESTION_MESSAGE);
-       return interfaz.ingresar(username.getText(), password.getText());
-        }catch(Exception ex){
+            JOptionPane.showMessageDialog(null, paneli, "login", JOptionPane.QUESTION_MESSAGE);
+            strUsername = username.getText();
+            return interfaz.ingresar(username.getText(), password.getText());
+        } catch (Exception ex) {
             System.out.println(ex);
         }
         return false;
     }
 
     public void actionPerformed(ActionEvent e) {
-        Object obj=e.getSource();
-        
-        if(btaccli==obj){
+        Object obj = e.getSource();
+
+        if (btaccli == obj) {
             actualizartablaclientes();
         }
-        if(btsalir==obj){
+        if (btsalir == obj) {
             System.exit(0);
         }
-        
-        if(btacmov==obj){
+
+        if (btacmov == obj) {
             actualizartablamov();
         }
-        
-        if(btaccue==obj){
+
+        if (btaccue == obj) {
             actualizartablacuentas();
         }
-        
+
     }
 
     private void actualizartablaclientes() {
-        DefaultTableModel modelo=(DefaultTableModel) tablacli.getModel();
-        try{
-        ArrayList <cliente> datoscli;
-        Object [] datos = new Object [6];
-        datoscli=interfaz.datosclientes();
-        System.out.println(modelo.getRowCount());
-        
-        for (int k = 0; k < modelo.getRowCount(); k++) {
+        DefaultTableModel modelo = (DefaultTableModel) tablacli.getModel();
+        try {
+            ArrayList<cliente> datoscli;
+            Object[] datos = new Object[6];
+            datoscli = interfaz.datosclientes();
+            System.out.println(modelo.getRowCount());
+
+            for (int k = 0; k < modelo.getRowCount(); k++) {
                 modelo.removeRow(0);
                 k--;
-        }
-            
-        for (int i = 0; i < datoscli.size(); i++) {
-            datos[0]=datoscli.get(i).id;
-            datos[1]=datoscli.get(i).dni;
-            datos[2]=datoscli.get(i).nombre;
-            datos[3]=datoscli.get(i).apellidop;
-            datos[4]=datoscli.get(i).apellidom;
-            datos[5]=datoscli.get(i).telefono;   
-            modelo.addRow(datos);
-        }
-            
-           tablacli.setModel(modelo);
-        }catch(Exception ex){
+            }
+
+            for (int i = 0; i < datoscli.size(); i++) {
+                datos[0] = datoscli.get(i).id;
+                datos[1] = datoscli.get(i).dni;
+                datos[2] = datoscli.get(i).nombre;
+                datos[3] = datoscli.get(i).apellidop;
+                datos[4] = datoscli.get(i).apellidom;
+                datos[5] = datoscli.get(i).telefono;
+                modelo.addRow(datos);
+            }
+
+            tablacli.setModel(modelo);
+        } catch (Exception ex) {
             System.out.println(ex);
             JOptionPane.showMessageDialog(null, ex);
         }
-        
+
     }
 
     private void actualizartablamov() {
-        DefaultTableModel modelo=(DefaultTableModel) tablamov.getModel();
-        try{
-            
-        ArrayList <movimientos> datosmov;
-        Object [] datos = new Object [8];
-        datosmov=interfaz.datosmov();
+        DefaultTableModel modelo = (DefaultTableModel) tablamov.getModel();
+        try {
+
+            ArrayList<movimientos> datosmov;
+            Object[] datos = new Object[8];
+            datosmov = interfaz.datosmov();
         //System.out.println(modelo.getRowCount());
-        
-        for (int k = 0; k < modelo.getRowCount(); k++) {
+
+            for (int k = 0; k < modelo.getRowCount(); k++) {
                 modelo.removeRow(0);
                 k--;
-        }
-            
-        for (int i = 0; i < datosmov.size(); i++) {
-            datos[0]=datosmov.get(i).id;
-            datos[1]=datosmov.get(i).monto;
-            datos[2]=datosmov.get(i).usuario;
-            datos[3]=datosmov.get(i).tipo;
-            datos[4]=datosmov.get(i).origenc;
-            datos[5]=datosmov.get(i).origene;
-            datos[6]=datosmov.get(i).destinoc; 
-            datos[7]=datosmov.get(i).fecha; 
-            modelo.addRow(datos);
-        }
-            
-           tablamov.setModel(modelo);
-        }catch(Exception ex){
+            }
+
+            for (int i = 0; i < datosmov.size(); i++) {
+                datos[0] = datosmov.get(i).id;
+                datos[1] = datosmov.get(i).monto;
+                datos[2] = datosmov.get(i).usuario;
+                datos[3] = datosmov.get(i).tipo;
+                datos[4] = datosmov.get(i).origenc;
+                datos[5] = datosmov.get(i).origene;
+                datos[6] = datosmov.get(i).destinoc;
+                datos[7] = datosmov.get(i).fecha;
+                modelo.addRow(datos);
+            }
+
+            tablamov.setModel(modelo);
+        } catch (Exception ex) {
             System.out.println(ex);
             JOptionPane.showMessageDialog(null, ex);
         }
     }
 
     private void actualizartablacuentas() {
-        DefaultTableModel modelo=(DefaultTableModel) tablacue.getModel();
-        try{
-            
-        ArrayList <cuenta> datoscue;
-        Object [] datos = new Object [5];
-        datoscue=interfaz.datoscue();
+        DefaultTableModel modelo = (DefaultTableModel) tablacue.getModel();
+        try {
+
+            ArrayList<cuenta> datoscue;
+            Object[] datos = new Object[5];
+            datoscue = interfaz.datoscue();
         //System.out.println(modelo.getRowCount());
-        
-        for (int k = 0; k < modelo.getRowCount(); k++) {
+
+            for (int k = 0; k < modelo.getRowCount(); k++) {
                 modelo.removeRow(0);
                 k--;
-        }
-            
-        for (int i = 0; i < datoscue.size(); i++) {
-            datos[0]=datoscue.get(i).id;
-            datos[1]=datoscue.get(i).saldo;
-            datos[2]=datoscue.get(i).tipo;
-            datos[3]=datoscue.get(i).fechaa;
-            datos[4]=datoscue.get(i).propietario;
-            modelo.addRow(datos);
-        }
-            
-           tablacue.setModel(modelo);
-        }catch(Exception ex){
+            }
+
+            for (int i = 0; i < datoscue.size(); i++) {
+                datos[0] = datoscue.get(i).id;
+                datos[1] = datoscue.get(i).saldo;
+                datos[2] = datoscue.get(i).tipo;
+                datos[3] = datoscue.get(i).fechaa;
+                datos[4] = datoscue.get(i).propietario;
+                modelo.addRow(datos);
+            }
+
+            tablacue.setModel(modelo);
+        } catch (Exception ex) {
             System.out.println(ex);
             JOptionPane.showMessageDialog(null, ex);
         }
     }
 
     private void agregarcliente() {
-        DefaultTableModel modelo=(DefaultTableModel) tablacli.getModel();
-        try{
-            cliente c = new cliente (Integer.parseInt(txtcc.getText()),txtcd.getText(),txtcn.getText(),txtcap.getText(),txtcam.getText(),txtct.getText());
+        DefaultTableModel modelo = (DefaultTableModel) tablacli.getModel();
+        try {
+            cliente c = new cliente(Integer.parseInt(txtcc.getText()), txtcd.getText(), txtcn.getText(), txtcap.getText(), txtcam.getText(), txtct.getText());
             interfaz.agregarcliente(c);
-            Object [] datos = new Object [6];
-            datos[0]=Integer.parseInt(txtcc.getText());
-            datos[1]=txtcd.getText();
-            datos[2]=txtcn.getText();
-            datos[3]=txtcap.getText();
-            datos[4]=txtcam.getText();
-            datos[5]=txtct.getText();
-            
+            Object[] datos = new Object[6];
+            datos[0] = Integer.parseInt(txtcc.getText());
+            datos[1] = txtcd.getText();
+            datos[2] = txtcn.getText();
+            datos[3] = txtcap.getText();
+            datos[4] = txtcam.getText();
+            datos[5] = txtct.getText();
+
             modelo.addRow(datos);
             tablacli.setModel(modelo);
-            
-        }catch(Exception ex){
-            
+
+        } catch (Exception ex) {
+
         }
     }
 
     private void fillClienteForm(cliente clienteActual) {
-         txtcc.setText("");
+        txtcc.setText("");
         if (clienteActual.getId() > 0) {
             txtcc.setText(String.valueOf(clienteActual.getId()));
             txtcuedni.setText(String.valueOf(clienteActual.getId()));
         }
-        
+
         txtcd.setText(clienteActual.getDni());
         txtcn.setText(clienteActual.getNombre());
         txtcam.setText(clienteActual.getApellidom());
@@ -829,59 +920,113 @@ public class clientermi extends javax.swing.JFrame implements ActionListener{
 
     private cliente readClienteForm() {
         cliente cli = new cliente();
-        
+
         try {
             if (!txtcc.getText().equals("")) {
                 cli.setId(Integer.parseInt(txtcc.getText()));
             }
-        } catch (NumberFormatException e) {}
-        
+        } catch (NumberFormatException e) {
+        }
+
         cli.setDni(txtcd.getText());
         cli.setNombre(txtcn.getText());
         cli.setApellidop(txtcap.getText());
         cli.setApellidom(txtcam.getText());
         cli.setTelefono(txtct.getText());
-        
+
         return cli;
     }
-    
+
     private Boolean esFormClienteValido() {
         if (txtcd.getText().equals("")) {
             showError("Debe ingresar el DNI");
             return false;
         }
-        
+
         if (txtcn.getText().equals("")) {
             showError("Debe ingresar el Nombre");
             return false;
         }
-        
+
         if (txtcap.getText().equals("")) {
             showError("Debe ingresar el Apellido Paterno");
             return false;
         }
-        
+
         if (txtcam.getText().equals("")) {
             showError("Debe ingresar el Apellido Materno");
             return false;
         }
-        
+
         return true;
     }
-    
+
     private cuenta readCuentaForm() {
         cuenta cuenta = new cuenta();
         cuenta.setPropietario(Integer.parseInt(txtcuedni.getText()));
         cuenta.setTipo(comboTipoCuenta.getModel().getSelectedItem().toString());
-        
+
         return cuenta;
     }
-    
+
     private void showError(String msg) {
         JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.ERROR_MESSAGE);
     }
-    
+
     private void showInfo(String msg) {
         JOptionPane.showMessageDialog(this, msg, "Error", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private boolean esMovimientoFormValido() {
+        if (jComboBoxTipoMov.getSelectedItem().toString().equals(DEPOSITO)) {
+
+            if (Validator.isEmpty(txtDniOrigen)) {
+                showError("Debe ingresar el dni del depositante.");
+                return false;
+            }
+
+            if (!Validator.esEnteroPositivo(txtCuentaDestino)) {
+                showError("La cuenta de destino ingresada no es correcta.");
+                return false;
+            }
+
+            if (!Validator.esDoubleEnRango(txtMontoMovimiento, 0.01d, Double.MAX_VALUE)) {
+                showError("Debe ingresar un monto correcto.");
+                return false;
+            }
+        }
+
+        if (jComboBoxTipoMov.getSelectedItem().toString().equals(RETIRO)) {
+
+            if (Validator.isEmpty(txtCuentaOrigen)) {
+                showError("Debe ingresar el dni del depositante.");
+                return false;
+            }
+
+            if (!Validator.esDoubleEnRango(txtMontoMovimiento, 0.01d, Double.MAX_VALUE)) {
+                showError("Debe ingresar un monto correcto.");
+                return false;
+            }
+        }
+
+        if (jComboBoxTipoMov.getSelectedItem().toString().equals(TRANSFERENCIA)) {
+
+            if (Validator.isEmpty(txtCuentaOrigen)) {
+                showError("Debe ingresar el dni del depositante.");
+                return false;
+            }
+
+            if (!Validator.esEnteroPositivo(txtCuentaDestino)) {
+                showError("La cuenta de destino ingresada no es correcta.");
+                return false;
+            }
+
+            if (!Validator.esDoubleEnRango(txtMontoMovimiento, 0.01d, Double.MAX_VALUE)) {
+                showError("Debe ingresar un monto correcto.");
+                return false;
+            }
+        }
+
+        return true;
     }
 }

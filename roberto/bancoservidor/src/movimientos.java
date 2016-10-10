@@ -4,14 +4,17 @@ import java.sql.Date;
 
 
 public class movimientos implements Serializable{
-    int id;
+    Integer id;
     double monto;
-    int usuario;
+    Integer usuario;
     String tipo;
-    int origenc;
+    Integer origenc;
     String origene;
-    int destinoc;
+    Integer destinoc;
     Date fecha;
+
+    public movimientos() {
+    }
 
     public movimientos(int id, double monto, int usuario, String tipo, int origenc, String origene, int destinoc, Date fecha) {
         this.id = id;
@@ -56,11 +59,11 @@ public class movimientos implements Serializable{
         this.tipo = tipo;
     }
 
-    public int getOrigenc() {
+    public Integer getOrigenc() {
         return origenc;
     }
 
-    public void setOrigenc(int origenc) {
+    public void setOrigenc(Integer origenc) {
         this.origenc = origenc;
     }
 
@@ -72,11 +75,11 @@ public class movimientos implements Serializable{
         this.origene = origene;
     }
 
-    public int getDestinoc() {
+    public Integer getDestinoc() {
         return destinoc;
     }
 
-    public void setDestinoc(int destinoc) {
+    public void setDestinoc(Integer destinoc) {
         this.destinoc = destinoc;
     }
 

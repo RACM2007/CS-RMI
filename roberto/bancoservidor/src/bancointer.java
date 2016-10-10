@@ -10,6 +10,7 @@ public interface bancointer extends Remote{
     public ArrayList<cuenta> datoscue() throws RemoteException;
     public void agregarcliente(cliente c) throws RemoteException;
     public void agregarCuenta(cuenta c) throws RemoteException;
+    public RespuestaServidor agregarMovimiento(movimientos mov, String username) throws RemoteException;
     
     
 }

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 
 class servidor extends UnicastRemoteObject implements bancointer{
-
+    
     sqlope ope;
     
     public servidor(String dir, int puerto,String dirda, int puertoda, String userda, String passda, String bd) throws RemoteException{
@@ -81,5 +81,8 @@ class servidor extends UnicastRemoteObject implements bancointer{
         ope.agregarcuenta(c);
     }
 
-    
+    @Override
+    public RespuestaServidor agregarMovimiento(movimientos mov, String username) throws RemoteException {
+        return ope.agregarMovimiento(mov, username);
+    }
 }
