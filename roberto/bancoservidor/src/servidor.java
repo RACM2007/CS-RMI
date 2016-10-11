@@ -17,10 +17,13 @@ class servidor extends UnicastRemoteObject implements bancointer{
                 ope= new sqlope(dirda, puertoda, userda, passda, bd);
                 registro=LocateRegistry.createRegistry(puerto);
                registro.rebind("rmi://"+dir+":"+puerto+"/bancoservidor", this);
-               JOptionPane.showMessageDialog(null,"Servidor Activo");
+               
            } catch (Exception ex){
                JOptionPane.showMessageDialog(null,ex.getMessage());
            }
+            if(ope.con.estado){
+                JOptionPane.showMessageDialog(null, "Servidor Activo");
+            }
     }
 
     public boolean ingresar(String login, String pass) throws RemoteException {

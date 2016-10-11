@@ -676,13 +676,15 @@
                       <Component id="btacmov" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="16" max="32767" attributes="0"/>
-                  <Group type="103" groupAlignment="3" attributes="0">
-                      <Component id="jLabel21" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Component id="txtfini" alignment="3" min="-2" max="-2" attributes="0"/>
-                      <Group type="103" alignment="3" groupAlignment="3" attributes="0">
+                  <Group type="103" groupAlignment="0" attributes="0">
+                      <Group type="103" alignment="0" groupAlignment="3" attributes="0">
                           <Component id="jLabel22" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="txtfter" alignment="3" min="-2" max="-2" attributes="0"/>
                           <Component id="btacmov1" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
+                      </Group>
+                      <Group type="103" groupAlignment="3" attributes="0">
+                          <Component id="jLabel21" alignment="3" min="-2" max="-2" attributes="0"/>
+                          <Component id="txtfini" alignment="3" min="-2" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace type="separate" max="-2" attributes="0"/>

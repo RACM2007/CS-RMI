@@ -41,37 +41,15 @@ public class servidorvista extends javax.swing.JFrame implements ActionListener{
         Object obj=e.getSource();
         
         if(boton==obj){
-            
-             dirrmi="localhost";
-             puertormi=Integer.parseInt(txt2.getText());
-             dirda=txt3.getText();
-            puertoda=Integer.parseInt(txt4.getText());
-            userda=txt5.getText();
-            passda=txt6.getText();
-            bd=txt7.getText();
-            
-            //System.out.println(dirrmi+" "+puertormi+" "+dirda+" "+puertoda+" "+userda+" "+passda+" "+bd);
-            
-             try {
-            ser= new servidor(dirrmi,puertormi,dirda,puertoda,userda,passda,bd);
-        } catch (RemoteException ex) {
-            System.out.println(ex);
-        }      
-             boton.setEnabled(false);
-            boton1.setEnabled(true);
+            iniciarservidor();
+            if(!ser.ope.con.estado){
+            pararservidor();
+        }
         }
         if (boton1==obj) {
-            try{
-            ser.stop();
-            ser=null;
-            JOptionPane.showMessageDialog(null, "Servidor Detenido");
-            } catch (RemoteException ex) {
-            System.out.println(ex);
-            }
-            boton1.setEnabled(false);
-            boton.setEnabled(true);
+            pararservidor();
+            
         }
-        
         
     }
     
@@ -93,9 +71,9 @@ public class servidorvista extends javax.swing.JFrame implements ActionListener{
         jLabel1 = new javax.swing.JLabel();
         jLabel8 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        txt6 = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
         boton1 = new javax.swing.JButton();
+        txt6 = new javax.swing.JPasswordField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setAutoRequestFocus(false);
@@ -139,12 +117,12 @@ public class servidorvista extends javax.swing.JFrame implements ActionListener{
         jLabel2.setForeground(new java.awt.Color(255, 255, 255));
         jLabel2.setText("Configuración RMI:");
 
-        txt6.setText("123456");
-
         jLabel9.setForeground(new java.awt.Color(255, 255, 255));
         jLabel9.setText("Username:");
 
         boton1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/stop.png"))); // NOI18N
+
+        txt6.setText("123456");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -182,17 +160,19 @@ public class servidorvista extends javax.swing.JFrame implements ActionListener{
                             .addComponent(jLabel9)
                             .addGap(42, 42, 42)
                             .addComponent(txt5, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(30, 30, 30)
-                            .addComponent(jLabel8)
-                            .addGap(48, 48, 48)
-                            .addComponent(txt6, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addComponent(jLabel2)
                         .addGroup(layout.createSequentialGroup()
-                            .addGap(33, 33, 33)
-                            .addComponent(jLabel10)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(33, 33, 33)
+                                    .addComponent(jLabel10))
+                                .addGroup(layout.createSequentialGroup()
+                                    .addGap(30, 30, 30)
+                                    .addComponent(jLabel8)))
                             .addGap(18, 18, 18)
-                            .addComponent(txt7, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addComponent(txt7, javax.swing.GroupLayout.DEFAULT_SIZE, 150, Short.MAX_VALUE)
+                                .addComponent(txt6))))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -228,10 +208,8 @@ public class servidorvista extends javax.swing.JFrame implements ActionListener{
                         .addComponent(jLabel9))
                     .addComponent(txt5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(3, 3, 3)
-                        .addComponent(jLabel8))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel8)
                     .addComponent(txt6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -276,7 +254,41 @@ public class servidorvista extends javax.swing.JFrame implements ActionListener{
     private javax.swing.JTextField txt3;
     private javax.swing.JTextField txt4;
     private javax.swing.JTextField txt5;
-    private javax.swing.JTextField txt6;
+    private javax.swing.JPasswordField txt6;
     private javax.swing.JTextField txt7;
     // End of variables declaration//GEN-END:variables
+
+    private void iniciarservidor() {
+        dirrmi="localhost";
+             puertormi=Integer.parseInt(txt2.getText());
+             dirda=txt3.getText();
+            puertoda=Integer.parseInt(txt4.getText());
+            userda=txt5.getText();
+            passda=txt6.getText();
+            bd=txt7.getText();
+            
+            //System.out.println(dirrmi+" "+puertormi+" "+dirda+" "+puertoda+" "+userda+" "+passda+" "+bd);
+            
+             try {
+            ser= new servidor(dirrmi,puertormi,dirda,puertoda,userda,passda,bd);
+        } catch (RemoteException ex) {
+            System.out.println(ex);
+        }      
+             boton.setEnabled(false);
+            boton1.setEnabled(true);
+    }
+
+    private void pararservidor() {
+        try{
+            ser.stop();
+            ser=null;
+            JOptionPane.showMessageDialog(null, "Servidor Detenido");
+            } catch (RemoteException ex) {
+            System.out.println(ex);
+            }
+            boton1.setEnabled(false);
+            boton.setEnabled(true);
+    }
 }
+
+
