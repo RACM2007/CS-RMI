@@ -11,6 +11,9 @@ public interface bancointer extends Remote{
     public void agregarcliente(cliente c) throws RemoteException;
     public void agregarCuenta(cuenta c) throws RemoteException;
     public RespuestaServidor agregarMovimiento(movimientos mov, String username) throws RemoteException;
+    public void modicli(int cod, String dni, String nom, String ap, String am, String tel) throws RemoteException;
+    public void elicli(int parseInt) throws RemoteException;
+    public void elicue(int parseInt) throws RemoteException;
     
     
 }

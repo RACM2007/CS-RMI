@@ -9,12 +9,13 @@ import javax.swing.JOptionPane;
 class servidor extends UnicastRemoteObject implements bancointer{
     
     sqlope ope;
+    Registry registro;
     
     public servidor(String dir, int puerto,String dirda, int puertoda, String userda, String passda, String bd) throws RemoteException{
         super();
         try{
                 ope= new sqlope(dirda, puertoda, userda, passda, bd);
-               Registry registro=LocateRegistry.createRegistry(1099);
+                registro=LocateRegistry.createRegistry(puerto);
                registro.rebind("rmi://"+dir+":"+puerto+"/bancoservidor", this);
                JOptionPane.showMessageDialog(null,"Servidor Activo");
            } catch (Exception ex){
@@ -76,13 +77,35 @@ class servidor extends UnicastRemoteObject implements bancointer{
         ope.agregarcliente(c);
     }
 
-    @Override
     public void agregarCuenta(cuenta c) throws RemoteException {
         ope.agregarcuenta(c);
     }
-
-    @Override
+    
     public RespuestaServidor agregarMovimiento(movimientos mov, String username) throws RemoteException {
         return ope.agregarMovimiento(mov, username);
+    }
+
+   
+    public void modicli(int cod, String dni, String nom, String ap, String am, String tel) throws RemoteException{
+        ope.modicli(cod,dni,nom,ap,am,tel);
+    }
+
+    
+    public void elicli(int i) throws RemoteException{
+        ope.elicli(i);
+    }
+
+    public void elicue(int i) throws RemoteException{
+        ope.elicue(i);
+    }
+
+    void stop() throws RemoteException{
+        try{
+        UnicastRemoteObject.unexportObject(registro, true);
+        registro = null;
+        
+        } catch (Exception ex){
+               JOptionPane.showMessageDialog(null,ex);
+           }
     }
 }

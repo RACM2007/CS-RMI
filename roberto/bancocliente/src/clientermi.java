@@ -24,7 +24,8 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
     bancointer interfaz;
 
     public clientermi() {
-
+        boolean flag=true;
+        do{
         try {
             JPanel panel = new JPanel(new BorderLayout(5, 5));
 
@@ -49,13 +50,21 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
             Registry registro = LocateRegistry.getRegistry(direccion, puerto);
             interfaz = (bancointer) registro.lookup("rmi://" + direccion + ":" + puerto + "/bancoservidor");
         } catch (Exception ex) {
+            flag=false;
             System.out.println(ex);
         }
-
+        }while(!flag);
         boolean i = ingresar();
         while (i == false) {
-            JOptionPane.showMessageDialog(null, "Error en el Login o la Contraseña");
-            i = ingresar();
+            int a;
+            JOptionPane.showMessageDialog(null, "ERROR EN EL USUARIO Y/O PASSWORD");
+            a= JOptionPane.showConfirmDialog(this, "¿DESEA CERRAR EL SISTEMA?","ERROR",JOptionPane.YES_NO_OPTION);
+            if (a==JOptionPane.YES_OPTION)
+            {
+                System.exit(0);
+            }else{
+                i = ingresar();
+            }
         }
 
         initComponents();
@@ -192,13 +201,43 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
 
         jLabel2.setText("DNI:");
 
+        txtcd.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtcdKeyTyped(evt);
+            }
+        });
+
         jLabel7.setText("TELÉFONO:");
+
+        txtcam.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtcamKeyTyped(evt);
+            }
+        });
 
         jLabel4.setText("NOMBRE:");
 
+        txtcn.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtcnKeyTyped(evt);
+            }
+        });
+
         jLabel5.setText("APELLIDO PATERNO:");
 
+        txtcap.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtcapKeyTyped(evt);
+            }
+        });
+
         jLabel6.setText("APELLIDO MATERNO:");
+
+        txtct.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtctKeyTyped(evt);
+            }
+        });
 
         btagregarcli.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/new.png"))); // NOI18N
         btagregarcli.setText("NUEVO");
@@ -218,6 +257,11 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
 
         jButton8.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         jButton8.setText("ELIMINAR");
+        jButton8.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton8ActionPerformed(evt);
+            }
+        });
 
         btagregarcli1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/edit.png"))); // NOI18N
         btagregarcli1.setText("MODIFICAR");
@@ -332,6 +376,11 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                 "id", "saldo", "tipo", "fecha de apertura", "Codigo Cliente Propietario"
             }
         ));
+        tablacue.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tablacueMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tablacue);
 
         jLabel15.setText("NÚMERO DE CUENTA:");
@@ -352,6 +401,11 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
 
         jButton12.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/eliminar.png"))); // NOI18N
         jButton12.setText("ELIMINAR CUENTA");
+        jButton12.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton12ActionPerformed(evt);
+            }
+        });
 
         jLabel16.setText("TIPO:");
 
@@ -475,6 +529,12 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
 
         jLabel12.setText("Monto:");
 
+        txtMontoMovimiento.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtMontoMovimientoKeyTyped(evt);
+            }
+        });
+
         jButton7.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/bank.png"))); // NOI18N
         jButton7.setText("REALIZAR MOVIMIENTO BANCARIO");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
@@ -484,6 +544,23 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         });
 
         txtCuentaOrigen.setEnabled(false);
+        txtCuentaOrigen.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCuentaOrigenKeyTyped(evt);
+            }
+        });
+
+        txtCuentaDestino.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCuentaDestinoKeyTyped(evt);
+            }
+        });
+
+        txtDniOrigen.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtDniOrigenKeyTyped(evt);
+            }
+        });
 
         jLabel18.setText("Dni Origen:");
 
@@ -717,9 +794,117 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_jButton7ActionPerformed
 
     private void btagregarcli1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btagregarcli1ActionPerformed
-        // TODO add your handling code here:
+        int cod=Integer.parseInt(txtcc.getText());
+        String dni=txtcd.getText();
+        String nom=txtcn.getText();
+        String ap=txtcap.getText();
+        String am=txtct.getText();
+        String tel=txtct.getText();
+        try{
+        interfaz.modicli(cod,dni,nom,ap,am,tel);
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        actualizartablaclientes();
     }//GEN-LAST:event_btagregarcli1ActionPerformed
 
+    private void jButton8ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton8ActionPerformed
+        try{
+        interfaz.elicli(Integer.parseInt(txtcc.getText()));
+        JOptionPane.showMessageDialog(null, "Registro Eliminado");
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        actualizartablaclientes();
+    }//GEN-LAST:event_jButton8ActionPerformed
+
+    private void jButton12ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton12ActionPerformed
+        try{
+        interfaz.elicue(Integer.parseInt(jTextField7.getText()));
+        JOptionPane.showMessageDialog(null, "Registro Eliminado");
+        } catch (Exception ex) {
+            System.out.println(ex);
+        }
+        actualizartablacuentas();
+    }//GEN-LAST:event_jButton12ActionPerformed
+
+    private void tablacueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablacueMouseClicked
+        jTextField7.setText(String.valueOf(tablacue.getValueAt(tablacue.getSelectedRow(), tablacue.getSelectedColumn())));
+    }//GEN-LAST:event_tablacueMouseClicked
+
+    private void txtcdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcdKeyTyped
+         char c=evt.getKeyChar(); 
+         
+          if(!Character.isDigit(c)) { 
+              
+              evt.consume(); 
+          }
+    }//GEN-LAST:event_txtcdKeyTyped
+
+    private void txtcamKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcamKeyTyped
+        char c=evt.getKeyChar();
+          if(!Character.isDigit(c)) { 
+              
+              evt.consume(); 
+          }
+    }//GEN-LAST:event_txtcamKeyTyped
+
+    private void txtDniOrigenKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtDniOrigenKeyTyped
+        char c=evt.getKeyChar();
+          if(!Character.isDigit(c)) { 
+               
+              evt.consume(); 
+          }
+    }//GEN-LAST:event_txtDniOrigenKeyTyped
+
+    private void txtCuentaOrigenKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuentaOrigenKeyTyped
+        char c=evt.getKeyChar();
+          if(!Character.isDigit(c)) { 
+              
+              evt.consume(); 
+          }
+    }//GEN-LAST:event_txtCuentaOrigenKeyTyped
+
+    private void txtCuentaDestinoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCuentaDestinoKeyTyped
+        char c=evt.getKeyChar();
+          if(!Character.isDigit(c)) { 
+               
+              evt.consume(); 
+          }
+    }//GEN-LAST:event_txtCuentaDestinoKeyTyped
+
+    private void txtMontoMovimientoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtMontoMovimientoKeyTyped
+        char c=evt.getKeyChar();
+          if(Character.isDigit(c) || c=='.' || c==',') { 
+              
+          }else{
+              evt.consume(); 
+          }
+    }//GEN-LAST:event_txtMontoMovimientoKeyTyped
+
+    private void txtcnKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcnKeyTyped
+        char c=evt.getKeyChar();
+          if(!Character.isLetter(c)) { 
+               
+              evt.consume(); 
+          }
+    }//GEN-LAST:event_txtcnKeyTyped
+
+    private void txtcapKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcapKeyTyped
+        char c=evt.getKeyChar();
+          if(!Character.isLetter(c)) { 
+             
+              evt.consume(); 
+          }
+    }//GEN-LAST:event_txtcapKeyTyped
+
+    private void txtctKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtctKeyTyped
+        char c=evt.getKeyChar();
+          if(!Character.isLetter(c)) { 
+               evt.consume(); 
+          }
+    }//GEN-LAST:event_txtctKeyTyped
+    
     private void clearMovimientoForm() {
         txtDniOrigen.setText("");
         txtCuentaOrigen.setText("");
