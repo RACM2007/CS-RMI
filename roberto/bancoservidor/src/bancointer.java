@@ -14,6 +14,8 @@ public interface bancointer extends Remote{
     public void modicli(int cod, String dni, String nom, String ap, String am, String tel) throws RemoteException;
     public void elicli(int parseInt) throws RemoteException;
     public void elicue(int parseInt) throws RemoteException;
+    public ArrayList<cliente> datosclientesfil(String text) throws RemoteException;
+    public ArrayList<cliente> datosclientesfilnom(String text) throws RemoteException;
     
     
 }

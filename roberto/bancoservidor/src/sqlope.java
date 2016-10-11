@@ -394,5 +394,49 @@ public class sqlope {
             JOptionPane.showMessageDialog(null,"No se realizó por "+e);
         }
     }
+
+    ArrayList<cliente> datosclientesfil(String text) {
+        ArrayList <cliente> dc= new ArrayList();
+        cliente c;
+        try{
+            String sentencia= "select * from cliente where dni like '"+text+"%'";
+            Statement stm= (Statement) con.getConnection().createStatement();
+            ResultSet rs= stm.executeQuery(sentencia);
+  
+            while(rs.next()){
+                
+                c= new cliente(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),rs.getString(6));
+                dc.add(c);
+            }
+            
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error al extraer datos del cliente sqlope");
+        }
+        
+        return dc;
+    }
+
+    ArrayList<cliente> datosclientesfilnom(String text) {
+        ArrayList <cliente> dc= new ArrayList();
+        cliente c;
+        try{
+            String sentencia= "select * from cliente where concat (nombre,' ',apellidop,' ',apellidom) like '"+text+"%'";
+            Statement stm= (Statement) con.getConnection().createStatement();
+            ResultSet rs= stm.executeQuery(sentencia);
+  
+            while(rs.next()){
+                
+                c= new cliente(rs.getInt(1), rs.getString(2), rs.getString(3), rs.getString(4), rs.getString(5),rs.getString(6));
+                dc.add(c);
+            }
+            
+            
+        }catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error al extraer datos del cliente sqlope");
+        }
+        
+        return dc;
+    }
     
 }

@@ -108,4 +108,15 @@ class servidor extends UnicastRemoteObject implements bancointer{
                JOptionPane.showMessageDialog(null,ex);
            }
     }
+
+    public ArrayList<cliente> datosclientesfil(String text) throws RemoteException {
+        ArrayList <cliente> dc= ope.datosclientesfil(text);
+        return dc;
+    }
+
+    @Override
+    public ArrayList<cliente> datosclientesfilnom(String text) throws RemoteException {
+        ArrayList <cliente> dc= ope.datosclientesfilnom(text);
+        return dc;
+    }
 }
