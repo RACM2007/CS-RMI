@@ -342,5 +342,57 @@ public class sqlope {
         agregarMovimiento(mov, connection);
         return RespuestaServidor.getExito("Deposito realzado con exitosamente.");
     }
+
+    void modicli(int cod, String dni, String nom, String ap, String am, String tel) {
+          
+        //String q = " UPDATE cliente SET dni = "+dni+", nombre = "+nom+" apellidop = "+ap+" apellidom = "+am+" telefono = "+tel+" WHERE id= " + cod;
+        try {
+            String query = "UPDATE CLIENTE SET dni = ?, nombre = ? , apellidop = ?, apellidom = ?, telefono = ? WHERE id = ?";
+            PreparedStatement statement = con.getConnection().prepareStatement(query);
+            
+            statement.setString(1, dni);
+            statement.setString(2, nom);
+            statement.setString(3, ap);
+            statement.setString(4, am);
+            statement.setString(5, tel);
+            statement.setInt(6, cod);
+            
+            statement.executeUpdate();
+           
+         }catch(SQLException e){            
+             e.printStackTrace();
+            JOptionPane.showMessageDialog(null,"No se realizó por "+e);
+        }
+    }
+
+    void elicli(int i) {
+        try {
+            String query = "DELETE FROM CLIENTE  WHERE id = ?";
+            PreparedStatement statement = con.getConnection().prepareStatement(query);
+            
+            statement.setInt(1, i);
+            
+            statement.executeUpdate();
+           
+         }catch(SQLException e){            
+             e.printStackTrace();
+            JOptionPane.showMessageDialog(null,"No se realizó por "+e);
+        }
+    }
+
+    void elicue(int i) {
+        try {
+            String query = "DELETE FROM CUENTA  WHERE id = ?";
+            PreparedStatement statement = con.getConnection().prepareStatement(query);
+            
+            statement.setInt(1, i);
+            
+            statement.executeUpdate();
+           
+         }catch(SQLException e){            
+             e.printStackTrace();
+            JOptionPane.showMessageDialog(null,"No se realizó por "+e);
+        }
+    }
     
 }
