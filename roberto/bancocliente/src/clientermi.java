@@ -52,6 +52,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
     bancointer interfaz;
 
     public clientermi() {
+        
         boolean flag=true;
         do{
         try {
@@ -82,23 +83,28 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
             System.out.println(ex);
         }
         }while(!flag);
-        boolean i = ingresar();
-        while (i == false) {
+        
+        flag=false;
+        do{
+            flag = ingresar();
+            if(!flag){
             int a;
             JOptionPane.showMessageDialog(null, "ERROR EN EL USUARIO Y/O PASSWORD");
-            a= JOptionPane.showConfirmDialog(this, "¿DESEA CERRAR EL SISTEMA?","ERROR",JOptionPane.YES_NO_OPTION);
+            a= JOptionPane.showConfirmDialog(null,"¿DESEA CERRAR EL SISTEMA?","ERROR",JOptionPane.YES_NO_OPTION);
+            
             if (a==JOptionPane.YES_OPTION)
             {
                 System.exit(0);
-            }else{
-                i = ingresar();
             }
-        }
-
+            }
+        }while(!flag);
+        System.out.println("k");
+        sfondo f = new sfondo ();
+        
         initComponents();
         transparencia();
         
-        sfondo f = new sfondo ();
+        
         this.add(f, BorderLayout.CENTER);
         
         btsalir.addActionListener(this);
@@ -108,7 +114,6 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         btagregarcli.addActionListener(this);
         
         this.setExtendedState(this.MAXIMIZED_BOTH);
-        this.setVisible(true);
         //this.setLocationRelativeTo(null);
         //this.setResizable(false);
         this.setTitle("BANCO RMI");
@@ -1390,7 +1395,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
 
         }
 
-        new clientermi();
+        new clientermi().setVisible(true);
     }
 
     
