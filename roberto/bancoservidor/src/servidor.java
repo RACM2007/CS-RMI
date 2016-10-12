@@ -84,8 +84,8 @@ class servidor extends UnicastRemoteObject implements bancointer{
         ope.agregarcuenta(c);
     }
     
-    public RespuestaServidor agregarMovimiento(movimientos mov, String username) throws RemoteException {
-        return ope.agregarMovimiento(mov, username);
+    public RespuestaServidor agregarMovimiento(movimientos mov) throws RemoteException {
+        return ope.agregarMovimiento(mov);
     }
 
    
@@ -121,5 +121,10 @@ class servidor extends UnicastRemoteObject implements bancointer{
     public ArrayList<cliente> datosclientesfilnom(String text) throws RemoteException {
         ArrayList <cliente> dc= ope.datosclientesfilnom(text);
         return dc;
+    }
+
+    @Override
+    public Integer obteneruserid(String text) throws RemoteException {
+        return ope.obtenerUsuarioId(text);
     }
 }

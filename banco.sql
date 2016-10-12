@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 60011
 File Encoding         : 65001
 
-Date: 2016-10-06 20:41:04
+Date: 2016-10-11 20:39:27
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -35,7 +35,7 @@ CREATE TABLE `cliente` (
 INSERT INTO `cliente` VALUES ('1', '70000000', 'Ramon', 'valdez', 'alcacer', '758469');
 INSERT INTO `cliente` VALUES ('2', '70000002', 'Jose', 'Cruz', 'Carmona', '524168');
 INSERT INTO `cliente` VALUES ('3', '80121314', 'luis', 'cuellar', 'diaz', '748596');
-INSERT INTO `cliente` VALUES ('4', '31425364', 'gilberto', 'cueto', 'solano', '147484');
+INSERT INTO `cliente` VALUES ('4', '31425364', 'gilberto', 'cuet', '147484', '147484');
 INSERT INTO `cliente` VALUES ('5', '68957425', 'valeria', 'davila', 'cortes', '235645');
 INSERT INTO `cliente` VALUES ('6', '34210958', 'omar', 'fuentes', 'cerdan', '841457');
 INSERT INTO `cliente` VALUES ('7', '31426870', 'maria', 'forment', 'sanchez', '251030');
@@ -59,8 +59,8 @@ CREATE TABLE `cuenta` (
 -- Records of cuenta
 -- ----------------------------
 INSERT INTO `cuenta` VALUES ('1', '800', 'ahorros', '2016-09-28', '1');
-INSERT INTO `cuenta` VALUES ('2', '15000', 'ahorros', '2016-09-28', '1');
-INSERT INTO `cuenta` VALUES ('3', '0.5', 'ahorros', '1976-09-04', '2');
+INSERT INTO `cuenta` VALUES ('2', '15100', 'ahorros', '2016-09-28', '1');
+INSERT INTO `cuenta` VALUES ('3', '300.5', 'ahorros', '1976-09-04', '2');
 INSERT INTO `cuenta` VALUES ('4', '5000', 'ahorros', '2016-06-19', '3');
 INSERT INTO `cuenta` VALUES ('5', '12.83', 'ahorros', '2016-09-11', '4');
 INSERT INTO `cuenta` VALUES ('6', '400', 'ahorros', '2016-09-11', '4');
@@ -86,12 +86,14 @@ CREATE TABLE `movimientos` (
   KEY `cuenta_movimientos_fk` (`origenc`),
   CONSTRAINT `cuenta_movimientos_fk` FOREIGN KEY (`origenc`) REFERENCES `cuenta` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION,
   CONSTRAINT `usuario_movimientos_fk` FOREIGN KEY (`usuario`) REFERENCES `usuario` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of movimientos
 -- ----------------------------
 INSERT INTO `movimientos` VALUES ('1', '5', '1', 'transferencia', '1', null, '2', '2016-10-05');
+INSERT INTO `movimientos` VALUES ('2', '100', '1', 'DEPOSITO', null, '90876545', '2', '2016-10-11');
+INSERT INTO `movimientos` VALUES ('3', '300', '2', 'DEPOSITO', null, '20508045', '3', '2016-10-11');
 
 -- ----------------------------
 -- Table structure for usuario
@@ -102,11 +104,13 @@ CREATE TABLE `usuario` (
   `login` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=latin1;
 
 -- ----------------------------
 -- Records of usuario
 -- ----------------------------
-INSERT INTO `usuario` VALUES ('1', 'racm', '1234');
-INSERT INTO `usuario` VALUES ('2', 'hugo', '4321');
+INSERT INTO `usuario` VALUES ('1', 'aracm', '1234');
+INSERT INTO `usuario` VALUES ('2', 'ahugo', '4321');
 INSERT INTO `usuario` VALUES ('3', 'admin', 'admin');
+INSERT INTO `usuario` VALUES ('4', 'cajero1', '1111');
+INSERT INTO `usuario` VALUES ('5', 'plataforma1', '2222');

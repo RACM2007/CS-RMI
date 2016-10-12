@@ -251,15 +251,12 @@ public class sqlope {
         return con.getConnection();
     }
     
-    public RespuestaServidor agregarMovimiento(movimientos mov, String username) throws RemoteException {
+    public RespuestaServidor agregarMovimiento(movimientos mov) throws RemoteException {
         RespuestaServidor resp = null;
         Connection connection = null;
         try {
             connection = this.con.getConnection();
             connection.setAutoCommit(false);
-            Integer userId = obtenerUsuarioId(username);
-            
-            mov.usuario = userId;
             switch (mov.tipo) {
                 case RETIRO:
                     resp = retiro(mov, connection);
