@@ -190,6 +190,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         btacmov1 = new javax.swing.JButton();
         labelusu = new javax.swing.JLabel();
         btcerrarsesion = new javax.swing.JButton();
+        btnewuser = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -763,6 +764,14 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
             }
         });
 
+        btnewuser.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/newuser.png"))); // NOI18N
+        btnewuser.setText("CREAR NUEVO USUARIO");
+        btnewuser.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnewuserActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -782,7 +791,9 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                                 .addComponent(labelusu)
                                 .addGap(18, 18, 18)
                                 .addComponent(btcerrarsesion)
-                                .addGap(540, 540, 540))
+                                .addGap(18, 18, 18)
+                                .addComponent(btnewuser)
+                                .addGap(355, 355, 355))
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                                     .addComponent(jPanelMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -801,7 +812,8 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                 .addGap(2, 2, 2)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelusu)
-                    .addComponent(btcerrarsesion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btcerrarsesion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnewuser, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -809,7 +821,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanelCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addComponent(jPanelMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(23, Short.MAX_VALUE))
         );
 
         pack();
@@ -1150,6 +1162,40 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         administrarrol();
             
     }//GEN-LAST:event_btcerrarsesionActionPerformed
+
+    private void btnewuserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnewuserActionPerformed
+        try {
+            JPanel paneli = new JPanel(new BorderLayout(5, 5));
+            JPanel label = new JPanel(new GridLayout(0, 1, 2, 2));
+            label.add(new JLabel("Login", SwingConstants.RIGHT));
+            label.add(new JLabel("Password", SwingConstants.RIGHT));
+            label.add(new JLabel("Confirme Password", SwingConstants.RIGHT));
+            paneli.add(label, BorderLayout.WEST);
+
+            JPanel controls = new JPanel(new GridLayout(0, 1, 2, 2));
+            JTextField username = new JTextField();
+            controls.add(username);
+            JPasswordField password = new JPasswordField();
+            controls.add(password);
+            JPasswordField cpassword = new JPasswordField();
+            controls.add(cpassword);
+            paneli.add(controls, BorderLayout.CENTER);
+
+            JOptionPane.showMessageDialog(null, paneli, "Nuevo Usuario", JOptionPane.QUESTION_MESSAGE);
+            
+            if(!(username.getText().equalsIgnoreCase(""))&&!(password.getText().equalsIgnoreCase(""))
+                    &&password.getText().equalsIgnoreCase(cpassword.getText())&&(username.getText().charAt(0)=='a' || 
+                    username.getText().charAt(0)=='c' || username.getText().charAt(0)=='p')){
+                interfaz.agregarusuario(username.getText(),password.getText());
+            }else{
+                JOptionPane.showMessageDialog(null, "Error en el usuario o las contraseñas");
+                JOptionPane.showMessageDialog(null, "Usuario no Agregado");
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            System.out.println(ex);
+        }
+    }//GEN-LAST:event_btnewuserActionPerformed
     
     private void clearMovimientoForm() {
         txtDniOrigen.setText("");
@@ -1178,6 +1224,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JButton btagregarcli;
     private javax.swing.JButton btcerrarsesion;
     private javax.swing.JButton btmodcli;
+    private javax.swing.JButton btnewuser;
     private javax.swing.JButton btsalir;
     private javax.swing.JComboBox comboTipoCuenta;
     private javax.swing.JButton jButton11;
@@ -1252,7 +1299,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
             controls.add(password);
             paneli.add(controls, BorderLayout.CENTER);
 
-            JOptionPane.showMessageDialog(null, paneli, "login", JOptionPane.QUESTION_MESSAGE);
+            JOptionPane.showMessageDialog(null, paneli, "Inicio de Sesión", JOptionPane.QUESTION_MESSAGE);
             uactivo.setId(interfaz.obteneruserid(username.getText()));
             System.out.println(uactivo.getId());
             uactivo.setLogin(username.getText());
@@ -1659,34 +1706,37 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
     private void administrarrol() {
         switch (uactivo.login.charAt(0)){
             case 'p':
-                jButton7.setEnabled(false);
-                btagregarcli.setEnabled(true);
-                btaccli.setEnabled(true);
-                btmodcli.setEnabled(true);
-                jButton4.setEnabled(true);
-                jButton8.setEnabled(true);
-                jButton11.setEnabled(true);
-                jButton12.setEnabled(true);
+                jButton7.setVisible(false);
+                btagregarcli.setVisible(true);
+                btaccli.setVisible(true);
+                btmodcli.setVisible(true);
+                jButton4.setVisible(true);
+                jButton8.setVisible(true);
+                jButton11.setVisible(true);
+                jButton12.setVisible(true);
+                btnewuser.setVisible(false);
                 break;
             case 'c':
-                jButton7.setEnabled(true);
-                btagregarcli.setEnabled(false);
-                btaccli.setEnabled(false);
-                btmodcli.setEnabled(false);
-                jButton4.setEnabled(false);
-                jButton8.setEnabled(false);
-                jButton11.setEnabled(false);
-                jButton12.setEnabled(false);
+                jButton7.setVisible(true);
+                btagregarcli.setVisible(false);
+                btaccli.setVisible(false);
+                btmodcli.setVisible(false);
+                jButton4.setVisible(false);
+                jButton8.setVisible(false);
+                jButton11.setVisible(false);
+                jButton12.setVisible(false);
+                btnewuser.setVisible(false);
                 break;
             case 'a':
-                jButton7.setEnabled(true);
-                btagregarcli.setEnabled(true);
-                btaccli.setEnabled(true);
-                btmodcli.setEnabled(true);
-                jButton4.setEnabled(true);
-                jButton8.setEnabled(true);
-                jButton11.setEnabled(true);
-                jButton12.setEnabled(true);
+                jButton7.setVisible(true);
+                btagregarcli.setVisible(true);
+                btaccli.setVisible(true);
+                btmodcli.setVisible(true);
+                jButton4.setVisible(true);
+                jButton8.setVisible(true);
+                jButton11.setVisible(true);
+                jButton12.setVisible(true);
+                btnewuser.setVisible(true);
                 break;
             
         }

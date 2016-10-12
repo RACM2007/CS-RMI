@@ -435,5 +435,22 @@ public class sqlope {
         
         return dc;
     }
+
+    void agregarusuario(String text, String text0) {
+        boolean flag=true;
+        try{
+            PreparedStatement statement = con.getConnection().prepareStatement("INSERT INTO `usuario` (login, password) VALUES (?,?)");
+            statement.setString(1, text);
+            statement.setString(2, text0);
+            flag=false;
+            statement.executeUpdate();
+            
+        } catch (Exception e){
+            System.out.print(e);
+        }
+        if(!flag){
+            JOptionPane.showMessageDialog(null, "Usuario "+text+" Exitosamente Agregado");
+        }
+    }
     
 }

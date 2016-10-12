@@ -117,14 +117,16 @@ class servidor extends UnicastRemoteObject implements bancointer{
         return dc;
     }
 
-    @Override
     public ArrayList<cliente> datosclientesfilnom(String text) throws RemoteException {
         ArrayList <cliente> dc= ope.datosclientesfilnom(text);
         return dc;
     }
 
-    @Override
     public Integer obteneruserid(String text) throws RemoteException {
         return ope.obtenerUsuarioId(text);
+    }
+
+    public void agregarusuario(String text, String text0) throws RemoteException {
+        ope.agregarusuario(text,text0);
     }
 }

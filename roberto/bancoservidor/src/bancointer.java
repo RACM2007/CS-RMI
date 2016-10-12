@@ -17,6 +17,7 @@ public interface bancointer extends Remote{
     public ArrayList<cliente> datosclientesfil(String text) throws RemoteException;
     public ArrayList<cliente> datosclientesfilnom(String text) throws RemoteException;
     public Integer obteneruserid(String text) throws RemoteException;
+    public void agregarusuario(String text, String text0) throws RemoteException;
     
     
 }
