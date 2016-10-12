@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.util.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
+import java.io.FileOutputStream;
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -11,6 +12,31 @@ import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
+import com.itextpdf.awt.DefaultFontMapper;
+import com.itextpdf.text.Anchor;
+import com.itextpdf.text.BaseColor;
+import com.itextpdf.text.Chunk;
+import com.itextpdf.text.Document;
+import com.itextpdf.text.Element;
+import com.itextpdf.text.Font;
+import com.itextpdf.text.Font.FontFamily;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.PageSize;
+import com.itextpdf.text.Paragraph;
+import com.itextpdf.text.Phrase;
+import com.itextpdf.text.pdf.PdfContentByte;
+import com.itextpdf.text.pdf.PdfTemplate;
+import com.itextpdf.text.pdf.PdfWriter;
+import java.awt.Dimension;
+import java.awt.Graphics2D;
+import java.awt.Shape;
+import java.awt.print.PrinterException;
+import java.awt.print.PrinterJob;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.text.MessageFormat;
+import java.text.SimpleDateFormat;
 
 public class clientermi extends javax.swing.JFrame implements ActionListener {
 
@@ -92,6 +118,8 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         actualizartablaclientes();
         actualizartablamov();
         actualizartablacuentas();
+        
+        botonreportes.setEnabled(false);
         
         administrarrol();
 
@@ -191,6 +219,11 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         labelusu = new javax.swing.JLabel();
         btcerrarsesion = new javax.swing.JButton();
         btnewuser = new javax.swing.JButton();
+        jPanelreport = new javax.swing.JPanel();
+        jLabel23 = new javax.swing.JLabel();
+        jLabel24 = new javax.swing.JLabel();
+        txtcuerepor = new javax.swing.JTextField();
+        botonreportes = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -429,6 +462,11 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
 
         btaccue.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/reload.png"))); // NOI18N
         btaccue.setText("ACTUALIZAR TABLA");
+        btaccue.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btaccueActionPerformed(evt);
+            }
+        });
 
         jLabel15.setText("NÚMERO DE CUENTA:");
 
@@ -522,9 +560,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                             .addComponent(jTextField7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(txtcuedni, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(comboTipoCuenta, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addComponent(jButton11)
-                        .addGap(1, 1, 1)))
+                    .addComponent(jButton11))
                 .addGap(2, 2, 2)
                 .addComponent(jButton12)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -659,60 +695,57 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         jPanelMovimientosLayout.setHorizontalGroup(
             jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMovimientosLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel21)
-                .addGap(18, 18, 18)
-                .addComponent(txtfini)
-                .addGap(27, 27, 27)
-                .addComponent(jLabel22)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtfter, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(36, 36, 36)
-                .addComponent(btacmov1)
-                .addGap(34, 34, 34))
+                .addGap(166, 166, 166)
+                .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(jPanelMovimientosLayout.createSequentialGroup()
+                            .addComponent(jLabel9)
+                            .addGap(74, 74, 74)
+                            .addComponent(jComboBoxTipoMov, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGroup(jPanelMovimientosLayout.createSequentialGroup()
+                            .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel11)
+                                .addComponent(jLabel12))
+                            .addGap(18, 18, 18)
+                            .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtMontoMovimiento)
+                                .addComponent(txtCuentaDestino)))
+                        .addGroup(jPanelMovimientosLayout.createSequentialGroup()
+                            .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(jLabel10)
+                                .addComponent(jLabel18))
+                            .addGap(24, 24, 24)
+                            .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(txtDniOrigen)
+                                .addComponent(txtCuentaOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(jPanelMovimientosLayout.createSequentialGroup()
+                        .addGap(70, 70, 70)
+                        .addComponent(jButton7)))
+                .addContainerGap(240, Short.MAX_VALUE))
             .addGroup(jPanelMovimientosLayout.createSequentialGroup()
+                .addContainerGap()
                 .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanelMovimientosLayout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelMovimientosLayout.createSequentialGroup()
-                                .addComponent(jLabel13)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(btacmov))
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jLabel21)
+                        .addGap(18, 18, 18)
+                        .addComponent(txtfini)
+                        .addGap(27, 27, 27)
+                        .addComponent(jLabel22)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(txtfter, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(36, 36, 36)
+                        .addComponent(btacmov1)
+                        .addGap(24, 24, 24))
                     .addGroup(jPanelMovimientosLayout.createSequentialGroup()
-                        .addGap(166, 166, 166)
-                        .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(jPanelMovimientosLayout.createSequentialGroup()
-                                    .addComponent(jLabel9)
-                                    .addGap(74, 74, 74)
-                                    .addComponent(jComboBoxTipoMov, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGroup(jPanelMovimientosLayout.createSequentialGroup()
-                                    .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel11)
-                                        .addComponent(jLabel12))
-                                    .addGap(18, 18, 18)
-                                    .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtMontoMovimiento)
-                                        .addComponent(txtCuentaDestino)))
-                                .addGroup(jPanelMovimientosLayout.createSequentialGroup()
-                                    .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(jLabel10)
-                                        .addComponent(jLabel18))
-                                    .addGap(24, 24, 24)
-                                    .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                        .addComponent(txtDniOrigen)
-                                        .addComponent(txtCuentaOrigen, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))))
-                            .addGroup(jPanelMovimientosLayout.createSequentialGroup()
-                                .addGap(70, 70, 70)
-                                .addComponent(jButton7)))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addComponent(jLabel13)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(btacmov))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 695, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         jPanelMovimientosLayout.setVerticalGroup(
             jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanelMovimientosLayout.createSequentialGroup()
-                .addContainerGap()
                 .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel13)
                     .addComponent(btacmov, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -727,7 +760,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                         .addComponent(txtfini, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 180, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(jPanelMovimientosLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel9)
                     .addComponent(jComboBoxTipoMov, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -749,7 +782,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                     .addComponent(jLabel12))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jButton7, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
+                .addGap(29, 29, 29))
         );
 
         labelusu.setFont(new java.awt.Font("Calibri", 1, 18)); // NOI18N
@@ -772,6 +805,55 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
             }
         });
 
+        jLabel23.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        jLabel23.setText("GENERACIÓN DE REPORTES");
+
+        jLabel24.setText("NÚMERO DE CUENTA:");
+
+        txtcuerepor.setEditable(false);
+        txtcuerepor.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtcuereporKeyTyped(evt);
+            }
+        });
+
+        botonreportes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/report.png"))); // NOI18N
+        botonreportes.setText("GENERAR REPORTE DE ESTADO DE CUENTA");
+        botonreportes.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botonreportesActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanelreportLayout = new javax.swing.GroupLayout(jPanelreport);
+        jPanelreport.setLayout(jPanelreportLayout);
+        jPanelreportLayout.setHorizontalGroup(
+            jPanelreportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelreportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanelreportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel23)
+                    .addGroup(jPanelreportLayout.createSequentialGroup()
+                        .addComponent(jLabel24)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(txtcuerepor, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(115, 115, 115)
+                        .addComponent(botonreportes)))
+                .addContainerGap(19, Short.MAX_VALUE))
+        );
+        jPanelreportLayout.setVerticalGroup(
+            jPanelreportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanelreportLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel23)
+                .addGap(18, 18, 18)
+                .addGroup(jPanelreportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel24)
+                    .addComponent(txtcuerepor, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(botonreportes, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -780,28 +862,31 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanelCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jPanelClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(jPanelClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 505, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(labelusu)
-                                .addGap(18, 18, 18)
-                                .addComponent(btcerrarsesion)
-                                .addGap(18, 18, 18)
-                                .addComponent(btnewuser)
-                                .addGap(355, 355, 355))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                                    .addComponent(jPanelMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanelCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(jPanelreport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel3)
-                                        .addGap(314, 314, 314)
-                                        .addComponent(btsalir)))
-                                .addGap(30, 30, 30))))))
+                                        .addGap(10, 10, 10)
+                                        .addComponent(labelusu)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btcerrarsesion)
+                                        .addGap(18, 18, 18)
+                                        .addComponent(btnewuser))
+                                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                        .addComponent(jPanelMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                        .addGroup(layout.createSequentialGroup()
+                                            .addComponent(jLabel3)
+                                            .addGap(314, 314, 314)
+                                            .addComponent(btsalir))))))
+                        .addGap(30, 30, 30))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -815,12 +900,15 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                     .addComponent(btcerrarsesion, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnewuser, javax.swing.GroupLayout.PREFERRED_SIZE, 28, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jPanelClientes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jPanelCuentas, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(jPanelMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jPanelMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jPanelreport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap(23, Short.MAX_VALUE))
         );
 
@@ -864,6 +952,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
             fillClienteForm(clienteActual);
             filtrartablacue(id);
         }
+        botonreportes.setEnabled(false);
         
     }//GEN-LAST:event_tablacliMouseClicked
 
@@ -981,6 +1070,10 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         jTextField7.setText(String.valueOf(tablacue.getValueAt(tablacue.getSelectedRow(), tablacue.getSelectedColumn())));
         int row = tablacli.rowAtPoint(evt.getPoint());
         filtrartablamov((int)tablacue.getValueAt(row, 0));
+        
+        txtcuerepor.setText(""+(int)tablacue.getValueAt(row, 0));
+        botonreportes.setEnabled(true);
+        
     }//GEN-LAST:event_tablacueMouseClicked
 
     private void txtcdKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcdKeyTyped
@@ -1141,6 +1234,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
             System.out.println(ex);
             JOptionPane.showMessageDialog(null, ex);
         }
+        botonreportes.setEnabled(false);
     }//GEN-LAST:event_btacmov1ActionPerformed
 
     private void btcerrarsesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btcerrarsesionActionPerformed
@@ -1196,6 +1290,89 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
             System.out.println(ex);
         }
     }//GEN-LAST:event_btnewuserActionPerformed
+
+    private void txtcuereporKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcuereporKeyTyped
+        char c=evt.getKeyChar();
+          if(!Character.isDigit(c)) {
+              evt.consume(); 
+          }
+    }//GEN-LAST:event_txtcuereporKeyTyped
+
+    private void botonreportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonreportesActionPerformed
+        String ncuenta=txtcuerepor.getText();
+        if(!ncuenta.equalsIgnoreCase("")){
+        JFileChooser dialog = new JFileChooser();
+        int opcion = dialog.showSaveDialog(this);
+        String dic="";
+
+        if(opcion == JFileChooser.APPROVE_OPTION){
+
+            File dir = dialog.getSelectedFile();
+            dic = dir.toString();
+        }
+        
+        Image imagen,publicidad;
+        
+        // CREA DOCUMENTOS CON TAMAÑO CARTAS Y MARGENE DE TODO LADO DE 50   
+        Document document = new Document(PageSize.LETTER, 50, 50, 50, 50);
+        
+        try {
+            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(dic+".pdf"));
+            document.open();
+            
+            Paragraph paragraph = new Paragraph();
+                     
+            paragraph.add("BANCO CS - RMI");
+            document.add(paragraph);
+            
+            document.add(new Paragraph("---------------------------------------------------------"));
+            document.add(new Paragraph("|    REPORTE DE ESTADO DE CUENTA    |"));
+            document.add(new Paragraph("---------------------------------------------------------"));
+            document.add(new Paragraph("Numero de Cuenta : "+ncuenta));
+            document.add(new Paragraph("Codigo del Cliente Propietario : "+tablacue.getValueAt(tablacue.getSelectedRow(), 4)));
+            document.add(new Paragraph("Nombre del Cliente Propietario : "+tablacli.getValueAt(tablacli.getSelectedRow(), 2)+" "+tablacli.getValueAt(tablacli.getSelectedRow(), 3)+" "+tablacli.getValueAt(tablacli.getSelectedRow(), 4)));
+            document.add(new Paragraph("Tipo de Cuenta : "+tablacue.getValueAt(tablacue.getSelectedRow(), 2)));
+            document.add(new Paragraph("Fecha de Apertura : "+tablacue.getValueAt(tablacue.getSelectedRow(), 3)));
+            document.add(new Paragraph(" "));
+            document.add(new Paragraph("Saldo Actual de la Cuenta : "+tablacue.getValueAt(tablacue.getSelectedRow(), 1)+" Nuevo Soles"));
+            document.add(new Paragraph(" "));
+            document.add(new Paragraph(""));
+            document.add(new Paragraph("ULTIMOS MOVIMIENTOS REALIZADOS: "));
+            document.add(new Paragraph(""));
+            document.add(new Paragraph("| MONTO |  TIPO           | CUENTA ORIGEN |DNI ORIGEN| CUENTA DESTINO"
+                    + "|    FECHA      |"));
+            document.add(new Paragraph("----------------------------------------------------------------------"
+                     + "--------------------------------------------------------"));
+            DefaultTableModel modelo = (DefaultTableModel) tablamov.getModel();
+             for (int k = 0; k < modelo.getRowCount(); k++) {
+            document.add(new Paragraph("   "+modelo.getValueAt(k, 1)+"        "+modelo.getValueAt(k, 3)+"        "+
+                    modelo.getValueAt(k, 4)+"       "+modelo.getValueAt(k, 5)+"        "+
+                            modelo.getValueAt(k, 6)+"                    "+modelo.getValueAt(k, 7)));
+                
+            }
+            
+            
+            
+            // pARA COLOCAR FOOTER
+            document.add(new Paragraph(""));
+            document.add(new Paragraph(""));
+            document.add(new Paragraph(""));
+            document.add(new Paragraph(""));
+            document.add(new Paragraph("| BANCO RMI ® CLIENTE SERVIDOR 2016-2 |"));
+            document.close();
+            JOptionPane.showMessageDialog(null,"Generado PDF Exitosamente.");
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, e);
+        }
+        }else{
+            JOptionPane.showMessageDialog(null, "DEBE SELECCIONAR UNA CUENTA");
+        }
+    }//GEN-LAST:event_botonreportesActionPerformed
+
+    private void btaccueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btaccueActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btaccueActionPerformed
     
     private void clearMovimientoForm() {
         txtDniOrigen.setText("");
@@ -1217,6 +1394,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
 
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton botonreportes;
     private javax.swing.JButton btaccli;
     private javax.swing.JButton btaccue;
     private javax.swing.JButton btacmov;
@@ -1248,6 +1426,8 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JLabel jLabel20;
     private javax.swing.JLabel jLabel21;
     private javax.swing.JLabel jLabel22;
+    private javax.swing.JLabel jLabel23;
+    private javax.swing.JLabel jLabel24;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -1259,6 +1439,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JPanel jPanelClientes;
     private javax.swing.JPanel jPanelCuentas;
     private javax.swing.JPanel jPanelMovimientos;
+    private javax.swing.JPanel jPanelreport;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
@@ -1278,6 +1459,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
     private javax.swing.JTextField txtcn;
     private javax.swing.JTextField txtct;
     private javax.swing.JTextField txtcuedni;
+    private javax.swing.JTextField txtcuerepor;
     private javax.swing.JTextField txtfildni;
     private javax.swing.JTextField txtfilnom;
     private javax.swing.JTextField txtfini;
@@ -1317,6 +1499,8 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         Object obj = e.getSource();
 
         if (btaccli == obj) {
+            txtcuerepor.setText("");
+            botonreportes.setEnabled(false);
             actualizartablaclientes();
         }
         if (btsalir == obj) {
@@ -1324,10 +1508,15 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         }
 
         if (btacmov == obj) {
+            
+            txtcuerepor.setText("");
+            botonreportes.setEnabled(false);
             actualizartablamov();
         }
 
         if (btaccue == obj) {
+            txtcuerepor.setText("");
+            botonreportes.setEnabled(false);
             actualizartablacuentas();
         }
 
