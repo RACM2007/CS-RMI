@@ -4,39 +4,15 @@ import java.awt.event.ActionEvent;
 import java.util.*;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
-import java.io.FileOutputStream;
 import java.rmi.*;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
-import java.text.SimpleDateFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
-import com.itextpdf.awt.DefaultFontMapper;
-import com.itextpdf.text.Anchor;
-import com.itextpdf.text.BaseColor;
-import com.itextpdf.text.Chunk;
-import com.itextpdf.text.Document;
-import com.itextpdf.text.Element;
-import com.itextpdf.text.Font;
-import com.itextpdf.text.Font.FontFamily;
-import com.itextpdf.text.Image;
-import com.itextpdf.text.PageSize;
-import com.itextpdf.text.Paragraph;
-import com.itextpdf.text.Phrase;
-import com.itextpdf.text.pdf.PdfContentByte;
-import com.itextpdf.text.pdf.PdfTemplate;
-import com.itextpdf.text.pdf.PdfWriter;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Shape;
-import java.awt.print.PrinterException;
-import java.awt.print.PrinterJob;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.view.JasperViewer;
 
 public class clientermi extends javax.swing.JFrame implements ActionListener {
 
@@ -1070,9 +1046,8 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
     private void tablacueMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tablacueMouseClicked
         jTextField7.setText(String.valueOf(tablacue.getValueAt(tablacue.getSelectedRow(), tablacue.getSelectedColumn())));
         int row = tablacli.rowAtPoint(evt.getPoint());
-        filtrartablamov((int)tablacue.getValueAt(row, 0));
-        
         txtcuerepor.setText(""+(int)tablacue.getValueAt(row, 0));
+        filtrartablamov((int)tablacue.getValueAt(row, 0));
         botonreportes.setEnabled(true);
         
     }//GEN-LAST:event_tablacueMouseClicked
@@ -1300,75 +1275,29 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
     }//GEN-LAST:event_txtcuereporKeyTyped
 
     private void botonreportesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botonreportesActionPerformed
-        String ncuenta=txtcuerepor.getText();
-        if(!ncuenta.equalsIgnoreCase("")){
-        JFileChooser dialog = new JFileChooser();
-        int opcion = dialog.showSaveDialog(this);
-        String dic="";
-
-        if(opcion == JFileChooser.APPROVE_OPTION){
-
-            File dir = dialog.getSelectedFile();
-            dic = dir.toString();
-        }
         
-        Image imagen,publicidad;
+        if (!esFormReporteValido()) return;
         
-        // CREA DOCUMENTOS CON TAMAÑO CARTAS Y MARGENE DE TODO LADO DE 50   
-        Document document = new Document(PageSize.LETTER, 50, 50, 50, 50);
+        Integer cuenta = Integer.valueOf(txtcuerepor.getText());
         
+        Map<String, Object> parametros = new HashMap<>();
+        parametros.put("cuenta", cuenta);
+        
+        JasperPrint print = null;
+        tablacue.getValueAt(tablacue.getSelectedRow(), 4);
         try {
-            PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(dic+".pdf"));
-            document.open();
+            print = interfaz.obtenertReporte("movimientos", parametros);
+            JFrame viewer = new JFrame("Estado de cuenta.");
+            viewer.setSize(new Dimension(900, 700));
+            viewer.setLocationRelativeTo(null);
             
-            Paragraph paragraph = new Paragraph();
-                     
-            paragraph.add("BANCO CS - RMI");
-            document.add(paragraph);
-            
-            document.add(new Paragraph("---------------------------------------------------------"));
-            document.add(new Paragraph("|    REPORTE DE ESTADO DE CUENTA    |"));
-            document.add(new Paragraph("---------------------------------------------------------"));
-            document.add(new Paragraph("Numero de Cuenta : "+ncuenta));
-            document.add(new Paragraph("Codigo del Cliente Propietario : "+tablacue.getValueAt(tablacue.getSelectedRow(), 4)));
-            document.add(new Paragraph("Nombre del Cliente Propietario : "+tablacli.getValueAt(tablacli.getSelectedRow(), 2)+" "+tablacli.getValueAt(tablacli.getSelectedRow(), 3)+" "+tablacli.getValueAt(tablacli.getSelectedRow(), 4)));
-            document.add(new Paragraph("Tipo de Cuenta : "+tablacue.getValueAt(tablacue.getSelectedRow(), 2)));
-            document.add(new Paragraph("Fecha de Apertura : "+tablacue.getValueAt(tablacue.getSelectedRow(), 3)));
-            document.add(new Paragraph(" "));
-            document.add(new Paragraph("Saldo Actual de la Cuenta : "+tablacue.getValueAt(tablacue.getSelectedRow(), 1)+" Nuevo Soles"));
-            document.add(new Paragraph(" "));
-            document.add(new Paragraph(""));
-            document.add(new Paragraph("ULTIMOS MOVIMIENTOS REALIZADOS: "));
-            document.add(new Paragraph(""));
-            document.add(new Paragraph("| MONTO |  TIPO           | CUENTA ORIGEN |DNI ORIGEN| CUENTA DESTINO"
-                    + "|    FECHA      |"));
-            document.add(new Paragraph("----------------------------------------------------------------------"
-                     + "--------------------------------------------------------"));
-            DefaultTableModel modelo = (DefaultTableModel) tablamov.getModel();
-             for (int k = 0; k < modelo.getRowCount(); k++) {
-            document.add(new Paragraph("   "+modelo.getValueAt(k, 1)+"        "+modelo.getValueAt(k, 3)+"        "+
-                    modelo.getValueAt(k, 4)+"       "+modelo.getValueAt(k, 5)+"        "+
-                            modelo.getValueAt(k, 6)+"                    "+modelo.getValueAt(k, 7)));
-                
-            }
-            
-            
-            
-            // pARA COLOCAR FOOTER
-            document.add(new Paragraph(""));
-            document.add(new Paragraph(""));
-            document.add(new Paragraph(""));
-            document.add(new Paragraph(""));
-            document.add(new Paragraph("| BANCO RMI ® CLIENTE SERVIDOR 2016-2 |"));
-            document.close();
-            JOptionPane.showMessageDialog(null,"Generado PDF Exitosamente.");
-        } catch (Exception e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, e);
+            JasperViewer jrViewer = new JasperViewer(print, true);
+            viewer.getContentPane().add(jrViewer.getContentPane());
+            viewer.setVisible(true);
+        } catch (RemoteException ex) {
+            Logger.getLogger(clientermi.class.getName()).log(Level.SEVERE, null, ex);
         }
-        }else{
-            JOptionPane.showMessageDialog(null, "DEBE SELECCIONAR UNA CUENTA");
-        }
+        
     }//GEN-LAST:event_botonreportesActionPerformed
 
     private void btaccueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btaccueActionPerformed
@@ -1828,7 +1757,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
 
             tablamov.setModel(modelo);
         } catch (Exception ex) {
-            System.out.println(ex);
+            ex.printStackTrace();
             JOptionPane.showMessageDialog(null, ex);
         }
     }
@@ -1930,6 +1859,20 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                 break;
             
         }
+    }
+    
+    private Boolean esFormReporteValido() {
+        if (txtcuerepor.getText() == null || txtcuerepor.getText().isEmpty()) {
+            showError("Debe seleccionar una cuenta");
+            return false;
+        }
+        
+        if (!Validator.esEnteroPositivo(txtcuerepor.getText())) {
+            showError("El número de cuenta no es correcto.");
+            return false;
+        }
+        
+        return true;
     }
    
 }

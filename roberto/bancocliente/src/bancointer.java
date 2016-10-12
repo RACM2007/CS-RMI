@@ -1,6 +1,8 @@
 
 import java.rmi.*;
 import java.util.ArrayList;
+import java.util.Map;
+import net.sf.jasperreports.engine.JasperPrint;
 public interface bancointer extends Remote{
 
     public boolean ingresar(String a, String b) throws RemoteException;
@@ -18,6 +20,6 @@ public interface bancointer extends Remote{
     public ArrayList<cliente> datosclientesfilnom(String text) throws RemoteException;
     public Integer obteneruserid(String text) throws RemoteException;
     public void agregarusuario(String text, String text0) throws RemoteException;
-    
+    public JasperPrint obtenertReporte(String nombre, Map<String, Object> parametros) throws RemoteException;
     
 }

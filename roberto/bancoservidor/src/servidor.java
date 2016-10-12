@@ -4,7 +4,9 @@ import java.rmi.registry.Registry;
 import java.sql.*;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Map;
 import javax.swing.JOptionPane;
+import net.sf.jasperreports.engine.JasperPrint;
 
 class servidor extends UnicastRemoteObject implements bancointer{
     
@@ -14,6 +16,12 @@ class servidor extends UnicastRemoteObject implements bancointer{
     public servidor(String dir, int puerto,String dirda, int puertoda, String userda, String passda, String bd) throws RemoteException{
         super();
         try{
+            Parametros.HOST_DB = dirda;
+            Parametros.PORT_DB = puertoda;
+            Parametros.BD = bd;
+            Parametros.USER = userda;
+            Parametros.PASS = passda;
+            
                 ope= new sqlope(dirda, puertoda, userda, passda, bd);
                 registro=LocateRegistry.createRegistry(puerto);
                registro.rebind("rmi://"+dir+":"+puerto+"/bancoservidor", this);
@@ -128,5 +136,10 @@ class servidor extends UnicastRemoteObject implements bancointer{
 
     public void agregarusuario(String text, String text0) throws RemoteException {
         ope.agregarusuario(text,text0);
+    }
+
+    @Override
+    public JasperPrint obtenertReporte(String nombre, Map<String, Object> parametros) throws RemoteException {
+        return new ReportManager().getReport(nombre, parametros);
     }
 }

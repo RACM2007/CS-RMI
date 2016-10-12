@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="movimientos_subreport" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="10520fd1-aa54-489e-ae8a-54974a0821ed">
+	<property name="ireport.zoom" value="0.9090909090909091"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="cuenta" class="java.lang.Integer"/>
+	<queryString>
+		<![CDATA[SELECT
+     cliente.`nombre` AS cliente_nombre,
+     cliente.`apellidop` AS cliente_apellidop,
+     cliente.`apellidom` AS cliente_apellidom,
+     cuenta.`id` AS cuenta_id,
+     cuenta.`saldo` AS cuenta_saldo,
+     cuenta.`tipo` AS cuenta_tipo
+FROM
+     `cliente` cliente INNER JOIN `cuenta` cuenta ON cliente.`id` = cuenta.`propietario`
+
+WHERE cuenta.`id` = $P{cuenta}]]>
+	</queryString>
+	<field name="cliente_nombre" class="java.lang.String"/>
+	<field name="cliente_apellidop" class="java.lang.String"/>
+	<field name="cliente_apellidom" class="java.lang.String"/>
+	<field name="cuenta_id" class="java.lang.Integer"/>
+	<field name="cuenta_saldo" class="java.lang.Double"/>
+	<field name="cuenta_tipo" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="83" splitType="Stretch">
+			<textField pattern="#,##0.00">
+				<reportElement x="279" y="52" width="141" height="20" uuid="5da36e64-bb98-4cd9-9d23-d256cc79d98b"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cuenta_saldo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="73" y="52" width="130" height="20" uuid="40e8cd5a-f581-45bc-afba-d0f1b185815f"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cuenta_tipo}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="73" y="12" width="347" height="20" uuid="4af39e7a-3119-4cb9-a91e-5d4fdc7a21e8"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cliente_apellidop}.toUpperCase() + " " + $F{cliente_apellidom}.toUpperCase() + ", " + $F{cliente_nombre}.toUpperCase()]]></textFieldExpression>
+			</textField>
+			<textField pattern="00000000">
+				<reportElement x="73" y="32" width="347" height="20" uuid="78ab1ad9-936b-4c85-8ef6-aa36c4b9c0d7"/>
+				<box leftPadding="5"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cuenta_id}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="203" y="52" width="51" height="20" uuid="2a84ca25-0fa1-42da-9716-7e91437b020c"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Saldo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="12" width="63" height="20" uuid="77164ac6-0ecc-40c3-83f6-ce47c23be2a7"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cliente:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="32" width="63" height="20" uuid="7e11a930-30e1-49ea-abf7-c40a977099e7"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Cuenta:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="52" width="63" height="20" uuid="77372a31-114c-466a-9d79-bd906d039e49"/>
+				<box leftPadding="5" rightPadding="5"/>
+				<textElement verticalAlignment="Middle">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Tipo:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="254" y="52" width="25" height="20" uuid="7f82f7eb-6814-4a9d-ab4f-c5c27cf033be"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[S/.]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band splitType="Stretch"/>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
