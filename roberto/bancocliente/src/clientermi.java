@@ -136,6 +136,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
         btaccue.setOpaque(false);
         btsalir.setOpaque(false);
         jButton7.setOpaque(false);
+        jPanelreport.setOpaque(false);
     }
 
     @SuppressWarnings("unchecked")
