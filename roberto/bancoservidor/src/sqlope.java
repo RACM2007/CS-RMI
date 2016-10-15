@@ -452,5 +452,22 @@ public class sqlope {
             JOptionPane.showMessageDialog(null, "Usuario "+text+" Exitosamente Agregado");
         }
     }
+
+    void cambiarcontra(Integer id, String text, String text0) {
+        try {
+            String query = "UPDATE usuario SET password = ? WHERE id = ? AND password= ?";
+            PreparedStatement statement = con.getConnection().prepareStatement(query);
+            
+            statement.setString(1, text0);
+            statement.setInt(2, id);
+            statement.setString(3, text);
+            
+            statement.executeUpdate();
+           
+         }catch(SQLException e){            
+             e.printStackTrace();
+            JOptionPane.showMessageDialog(null,"No se realizó por "+e);
+        }
+    }
     
 }

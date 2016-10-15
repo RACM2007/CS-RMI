@@ -142,4 +142,11 @@ class servidor extends UnicastRemoteObject implements bancointer{
     public JasperPrint obtenertReporte(String nombre, Map<String, Object> parametros) throws RemoteException {
         return new ReportManager().getReport(nombre, parametros);
     }
+
+    @Override
+    public void cambiarcontra(Integer id, String text, String text0) throws RemoteException {
+        ope.cambiarcontra(id,text,text0);
+    }
+
+    
 }

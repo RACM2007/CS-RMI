@@ -21,5 +21,6 @@ public interface bancointer extends Remote{
     public Integer obteneruserid(String text) throws RemoteException;
     public void agregarusuario(String text, String text0) throws RemoteException;
     public JasperPrint obtenertReporte(String nombre, Map<String, Object> parametros) throws RemoteException;
+    public void cambiarcontra(Integer id, String text, String text0) throws RemoteException;
     
 }
