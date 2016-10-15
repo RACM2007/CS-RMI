@@ -53,7 +53,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
             System.out.println(direccion + " " + puerto);
 
             Registry registro = LocateRegistry.getRegistry(direccion, puerto);
-            interfaz = (bancointer) registro.lookup("rmi://" + direccion + ":" + puerto + "/bancoservidor");
+            interfaz = (bancointer) registro.lookup("bancoservidor");
         } catch (Exception ex) {
             flag=false;
             System.out.println(ex);
@@ -215,6 +215,11 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
 
         btsalir.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/salir.png"))); // NOI18N
         btsalir.setText("SALIR DEL SISTEMA");
+        btsalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btsalirActionPerformed(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
         jLabel1.setText("Clientes:");
@@ -821,7 +826,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                         .addComponent(txtcuerepor, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(115, 115, 115)
                         .addComponent(botonreportes)))
-                .addContainerGap(19, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanelreportLayout.setVerticalGroup(
             jPanelreportLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -853,7 +858,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                                 .addComponent(jPanelreport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addGap(0, 496, Short.MAX_VALUE)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
                                         .addGap(10, 10, 10)
@@ -891,7 +896,7 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
                         .addComponent(jPanelMovimientos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(jPanelreport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addContainerGap(23, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pack();
@@ -1308,6 +1313,10 @@ public class clientermi extends javax.swing.JFrame implements ActionListener {
     private void btaccueActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btaccueActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_btaccueActionPerformed
+
+    private void btsalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btsalirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btsalirActionPerformed
     
     private void clearMovimientoForm() {
         txtDniOrigen.setText("");

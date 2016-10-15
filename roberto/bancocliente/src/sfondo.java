@@ -5,7 +5,7 @@ import javax.swing.ImageIcon;
 public class sfondo extends javax.swing.JPanel {
 
     public sfondo() {
-        this.setSize(1400,1000);
+        this.setSize(1600,1200);
         
     }
     
