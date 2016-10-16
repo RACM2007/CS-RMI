@@ -56,6 +56,7 @@
                           <Component id="boton1" min="-2" pref="415" max="-2" attributes="0"/>
                           <Component id="boton3" alignment="0" min="-2" pref="415" max="-2" attributes="0"/>
                           <Component id="boton4" alignment="0" min="-2" pref="415" max="-2" attributes="0"/>
+                          <Component id="boton5" alignment="0" min="-2" pref="415" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -79,22 +80,24 @@
                   <Component id="btnewuser" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
                   <Component id="btcambiarcontra" alignment="3" min="-2" pref="28" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace type="unrelated" pref="20" max="32767" attributes="0"/>
+              <EmptySpace type="unrelated" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="labelusu1" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="60" max="-2" attributes="0"/>
                       <Component id="boton1" min="-2" pref="65" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="54" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="39" max="-2" attributes="0"/>
                       <Component id="boton2" min="-2" pref="65" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="51" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="40" max="-2" attributes="0"/>
                       <Component id="boton3" min="-2" pref="65" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="55" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="42" max="-2" attributes="0"/>
                       <Component id="boton4" min="-2" pref="65" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="41" max="-2" attributes="0"/>
+                      <Component id="boton5" min="-2" pref="65" max="-2" attributes="0"/>
                   </Group>
                   <Component id="jDesktopPane1" min="-2" max="-2" attributes="0"/>
               </Group>
-              <EmptySpace min="-2" pref="74" max="-2" attributes="0"/>
+              <EmptySpace min="-2" pref="26" max="-2" attributes="0"/>
           </Group>
       </Group>
     </DimensionLayout>
@@ -1244,6 +1247,17 @@
       </Properties>
       <Events>
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btcambiarcontraActionPerformed"/>
+      </Events>
+    </Component>
+    <Component class="javax.swing.JButton" name="boton5">
+      <Properties>
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+          <Font name="Tahoma" size="50" style="1"/>
+        </Property>
+        <Property name="text" type="java.lang.String" value="ACERCA DE"/>
+      </Properties>
+      <Events>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="boton5ActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
